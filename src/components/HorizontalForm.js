@@ -20,7 +20,7 @@ const HorizontalForm = ({ onSearch }) => {
     };
     
     try {
-      const response = await axios.post('http://maneesha-pc:8089/Policy/EndorsementDetails', searchParams);
+      const response = await axios.post('https://shafafia-git-main-farhanali2325-project.vercel.app/api/data', postData);
       onSearch(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
