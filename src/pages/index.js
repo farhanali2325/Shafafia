@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Datatable from '../components/DataTable';
 import HorizontalForm from '../components/HorizontalForm';
 import styles from '../styles/Home.module.css';
+import { useState } from 'react';
 
 export default function Home() {
-  const [searchParams, setSearchParams] = useState(null);
+  const [data, setData] = useState([]);
 
-  const handleSearch = (params) => {
-    setSearchParams(params);
+  const handleSearch = (fetchedData) => {
+    setData(fetchedData);
   };
 
   return (
@@ -17,10 +17,10 @@ export default function Home() {
         <h1 className="my-4">Fetch List</h1>
         <HorizontalForm onSearch={handleSearch} />
       </div>
-      {searchParams && (
+      {data.length > 0 && (
         <div className={`container-fluid mt-5 ${styles.fullWidthContainer}`}>
           <h1>Data Table</h1>
-          <Datatable searchParams={searchParams} />
+          <Datatable data={data} />
         </div>
       )}
     </>

@@ -12,36 +12,19 @@ const HorizontalForm = ({ onSearch }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // console.log(event)
-
-    // // Format dates to the required format (DD/MM/YYYY)
-    // const formatDate = (date) => {
-    //   const d = new Date(date);
-    //   const day = ('0' + d.getDate()).slice(-2);
-    //   const month = ('0' + (d.getMonth() + 1)).slice(-2);
-    //   const year = d.getFullYear();
-    //   return `${day}/${month}/${year}`;
-    // };
-
-    // const formattedDateFrom = formatDate(dateFrom);
-    // const formattedDateTo = formatDate(dateTo);
-
     const searchParams = {
       eidNo: emiratesID,
       cardNo: medicalCardNumber,
-      fromDate: setDateFrom,
-      toDate: setDateTo,
+      fromDate: dateFrom,
+      toDate: dateTo,
     };
-
+    
     try {
-      // "https://cors-anywhere.herokuapp.com/http://maneesha-pc:8089/Policy/EndorsementDetails"
-      const url = 'http://maneesha-pc:8089/Policy/EndorsementDetails';
-      const response = await axios.get(url, searchParams);
-      console.log("Farhan: ", response);
-      onSearch(response);
+      const response = await axios.get('http://maneesha-pc:8089/Policy/EndorsementDetails', { params: searchParams });
+      onSearch(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
-      alert('Error fetching data: ', error);
+      alert('Error fetching data');
     }
   };
 
@@ -65,7 +48,6 @@ const HorizontalForm = ({ onSearch }) => {
               <Form.Label>Medical Card Number</Form.Label>
               <Form.Control
                 type="text"
-                required
                 value={medicalCardNumber}
                 onChange={(e) => setMedicalCardNumber(e.target.value)}
                 placeholder="Medical Card Number"
