@@ -10,44 +10,43 @@ const EditPersonForm = () => {
   console.log(id);
 
   const [person, setPerson] = useState({
-    firstNameEn: '',
-    middleNameEn: '',
-    lastNameEn: '',
-    firstNameAr: '',
-    middleNameAr: '',
-    contactNumber: '',
-    birthDate: '',
-    gender: '',
-    nationality: '',
-    nationalityCode: '',
-    city: '',
-    passportNumber: '',
-    emiratesIDNumber: '',
-    visaNo: '',
-    unifiedId: '',
-    sponsorNumber: '',
-    sponsorCardNumber: '',
-    sponsorNameEn: '',
-    sponsorNameAr: '',
-    member: {
-      id: '',
-      relation: '',
-      relationTo: '',
-      contract: {
-        packageName: '',
-        startDate: '',
-        renewalDate: '',
-        expiryDate: '',
-        grossPremium: '',
-        policyHolder: '',
-        policyNumber: '',
-        companyID: '',
-        vat: '',
-        vatPercent: '',
-        status: '',
-      },
-    },
-  });
+      "unifiedNumber": "82187019",
+      "firstNameEn": "Kolothodi",
+      "middleNameEn": null,
+      "lastNameEn": ".",
+      "firstNameAr": null,
+      "middleNameAr": null,
+      "contactNumber": "971553948838",
+      "birthDate": "1976-10-09T00:00:00",
+      "gender": "M",
+      "nationality": "IND",
+      "nationalityCode": null,
+      "city": null,
+      "zipCode": null,
+      "passportNumber": "P6236298",
+      "emiratesIDNumber": "784-1976-0285968-4",
+      "sponsorNumber": null,
+      "sponsorNameEn": null,
+      "sponsorNameAr": null,
+      "member": {
+        "id": "78C1A06FDBF15E78", // Medical Car Number
+        "relation": "PR",
+        "relationTo": null,
+        "contract": {
+          "packageName": null,
+          "grossPremium": 0,
+          "vatPercent": 5,
+          "renewalDate": null,
+          "companyID": null,
+          "startDate": "2018-01-01T00:00:00",
+          "policyHolder": "",
+          "expiryDate": "2018-12-31T00:00:00",
+          "collectedPremium": 0,
+          "status": "A",
+          "vat": 0
+          }
+        }
+});
 
   // useEffect(() => {
   //   if (id) {

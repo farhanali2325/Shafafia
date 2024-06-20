@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button, Row, Col, Container } from 'react-bootstrap';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../styles/Home.module.css';
 
@@ -11,8 +12,37 @@ const HorizontalForm = ({ onSearch }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const searchParams = { emiratesID, medicalCardNumber, dateFrom, dateTo };
-    onSearch(searchParams);
+    // console.log(event)
+
+    // // Format dates to the required format (DD/MM/YYYY)
+    // const formatDate = (date) => {
+    //   const d = new Date(date);
+    //   const day = ('0' + d.getDate()).slice(-2);
+    //   const month = ('0' + (d.getMonth() + 1)).slice(-2);
+    //   const year = d.getFullYear();
+    //   return `${day}/${month}/${year}`;
+    // };
+
+    // const formattedDateFrom = formatDate(dateFrom);
+    // const formattedDateTo = formatDate(dateTo);
+
+    const searchParams = {
+      eidNo: emiratesID,
+      cardNo: medicalCardNumber,
+      fromDate: setDateFrom,
+      toDate: setDateTo,
+    };
+
+    try {
+      // "https://cors-anywhere.herokuapp.com/http://maneesha-pc:8089/Policy/EndorsementDetails"
+      const url = 'http://maneesha-pc:8089/Policy/EndorsementDetails';
+      const response = await axios.get(url, {data: searchParams});
+      console.log("Farhan: ", response);
+      onSearch(response);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      alert('Error fetching data: ', error);
+    }
   };
 
   return (
@@ -35,6 +65,7 @@ const HorizontalForm = ({ onSearch }) => {
               <Form.Label>Medical Card Number</Form.Label>
               <Form.Control
                 type="text"
+                required
                 value={medicalCardNumber}
                 onChange={(e) => setMedicalCardNumber(e.target.value)}
                 placeholder="Medical Card Number"
