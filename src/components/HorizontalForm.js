@@ -5,27 +5,40 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../styles/Home.module.css';
 
 const HorizontalForm = ({ onSearch }) => {
-  const [emiratesID, setEmiratesID] = useState('');
-  const [medicalCardNumber, setMedicalCardNumber] = useState('');
-  const [dateFrom, setDateFrom] = useState('');
-  const [dateTo, setDateTo] = useState('');
+  const [formData, setFormData] = useState({
+    emiratesID: '',
+    medicalCardNumber: '',
+    dateFrom: '',
+    dateTo: '',
+  });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const searchParams = {
+
+    const { emiratesID, medicalCardNumber, dateFrom, dateTo } = formData;
+
+    const requestData = {
       eidNo: emiratesID,
       cardNo: medicalCardNumber,
       fromDate: dateFrom,
       toDate: dateTo,
     };
-    
+
     try {
-      const response = await axios.post('https://shafafia-git-main-farhanali2325-project.vercel.app/api/data', postData);
+      const response = await axios.post('http://maneesha-pc:8089/Policy/EndorsementDetails', requestData);
       onSearch(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
       alert('Error fetching data');
     }
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   return (
@@ -37,9 +50,9 @@ const HorizontalForm = ({ onSearch }) => {
               <Form.Label>Emirates ID</Form.Label>
               <Form.Control
                 type="text"
-                value={emiratesID}
-                onChange={(e) => setEmiratesID(e.target.value)}
-                placeholder="Emirates ID"
+                name="emiratesID"
+                value={formData.emiratesID}
+                onChange={handleChange}
               />
             </Form.Group>
           </Col>
@@ -47,10 +60,10 @@ const HorizontalForm = ({ onSearch }) => {
             <Form.Group controlId="medicalCardNumber">
               <Form.Label>Medical Card Number</Form.Label>
               <Form.Control
-                type="text"
-                value={medicalCardNumber}
-                onChange={(e) => setMedicalCardNumber(e.target.value)}
-                placeholder="Medical Card Number"
+                  type="text"
+                  name="medicalCardNumber"
+                  value={formData.medicalCardNumber}
+                  onChange={handleChange}
               />
             </Form.Group>
           </Col>
@@ -59,8 +72,9 @@ const HorizontalForm = ({ onSearch }) => {
               <Form.Label>Date From</Form.Label>
               <Form.Control
                 type="date"
-                value={dateFrom}
-                onChange={(e) => setDateFrom(e.target.value)}
+                name="dateFrom"
+                value={formData.dateFrom}
+                onChange={handleChange}
               />
             </Form.Group>
           </Col>
@@ -69,8 +83,9 @@ const HorizontalForm = ({ onSearch }) => {
               <Form.Label>Date To</Form.Label>
               <Form.Control
                 type="date"
-                value={dateTo}
-                onChange={(e) => setDateTo(e.target.value)}
+                name="dateTo"
+                value={formData.dateTo}
+                onChange={handleChange}
               />
             </Form.Group>
           </Col>
