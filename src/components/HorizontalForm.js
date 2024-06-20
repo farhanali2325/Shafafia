@@ -20,7 +20,7 @@ const HorizontalForm = ({ onSearch }) => {
     };
     
     try {
-      const response = await axios.get('http://maneesha-pc:8089/Policy/EndorsementDetails', { params: searchParams });
+      const response = await axios.post('http://maneesha-pc:8089/Policy/EndorsementDetails', searchParams);
       onSearch(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
