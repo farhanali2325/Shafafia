@@ -36,7 +36,7 @@ const HorizontalForm = ({ onSearch }) => {
     try {
       // "https://cors-anywhere.herokuapp.com/http://maneesha-pc:8089/Policy/EndorsementDetails"
       const url = 'http://maneesha-pc:8089/Policy/EndorsementDetails';
-      const response = await axios.get(url, {data: searchParams});
+      const response = await axios.get(url, searchParams);
       console.log("Farhan: ", response);
       onSearch(response);
     } catch (error) {
