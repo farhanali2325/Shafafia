@@ -5,40 +5,38 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../styles/Home.module.css';
 
 const HorizontalForm = ({ onSearch }) => {
-  const [formData, setFormData] = useState({
-    emiratesID: '',
-    medicalCardNumber: '',
-    dateFrom: '',
-    dateTo: '',
-  });
+  const [emiratesID, setEmiratesID] = useState('');
+  const [medicalCardNumber, setMedicalCardNumber] = useState('');
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
 
+  const convertDateFormat = (date) => {
+    const [year, month, day] = date.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
+ 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const fromDate = dateFrom ? convertDateFormat(dateFrom) : '';
+    const toDate = dateTo ? convertDateFormat(dateTo) : '';
 
-    const { emiratesID, medicalCardNumber, dateFrom, dateTo } = formData;
-
-    const requestData = {
+    const searchParams = {
       eidNo: emiratesID,
       cardNo: medicalCardNumber,
-      fromDate: dateFrom,
-      toDate: dateTo,
+      fromDate,
+      toDate,
     };
-
+    
     try {
-      const response = await axios.post('http://maneesha-pc:8089/Policy/EndorsementDetails', requestData);
+      console.log(searchParams);
+      const response = await axios.post('http://INHOUSE:8089/Policy/EndorsementDetails', searchParams);
+      console.log(response.data);
       onSearch(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
       alert('Error fetching data');
     }
-  };
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
   };
 
   return (
@@ -51,8 +49,8 @@ const HorizontalForm = ({ onSearch }) => {
               <Form.Control
                 type="text"
                 name="emiratesID"
-                value={formData.emiratesID}
-                onChange={handleChange}
+                value={emiratesID}
+                onChange={(e) => setEmiratesID(e.target.value)}
               />
             </Form.Group>
           </Col>
@@ -62,8 +60,8 @@ const HorizontalForm = ({ onSearch }) => {
               <Form.Control
                   type="text"
                   name="medicalCardNumber"
-                  value={formData.medicalCardNumber}
-                  onChange={handleChange}
+                  value={medicalCardNumber}
+                  onChange={(e) => setMedicalCardNumber(e.target.value)}
               />
             </Form.Group>
           </Col>
@@ -73,8 +71,8 @@ const HorizontalForm = ({ onSearch }) => {
               <Form.Control
                 type="date"
                 name="dateFrom"
-                value={formData.dateFrom}
-                onChange={handleChange}
+                value={dateFrom}
+                onChange={(e) => setDateFrom(e.target.value)}
               />
             </Form.Group>
           </Col>
@@ -84,8 +82,8 @@ const HorizontalForm = ({ onSearch }) => {
               <Form.Control
                 type="date"
                 name="dateTo"
-                value={formData.dateTo}
-                onChange={handleChange}
+                value={dateTo}
+                onChange={(e) => setDateTo(e.target.value)}
               />
             </Form.Group>
           </Col>
