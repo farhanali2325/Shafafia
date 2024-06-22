@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use('/api', personRoutes); // Prefix all routes with '/api'
 
 // Connect to MongoDB
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(MONGODB_URI);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
