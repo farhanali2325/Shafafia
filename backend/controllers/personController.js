@@ -1,7 +1,10 @@
 // controllers/personController.js
-
+const fs = require('fs');
+const path = require('path');
 const Person = require('../models/person');
 const { convertJsonToXml } = require('../helper/xmlHelper');
+require('dotenv').config();
+
 // GET all persons
 const getAllPersons = async (req, res) => {
   try {
@@ -27,17 +30,32 @@ const getPersonById = async (req, res) => {
 
 // POST create a new person
 const createPerson = async (req, res) => {
-  const person = new Person({
-    unifiedNumber: req.body.unifiedNumber,
-    firstNameEn: req.body.firstNameEn,
-    middleNameEn: req.body.middleNameEn,
-    // Add other fields as needed
-    member: req.body.member, // Assuming member object is passed in request body
-  });
-
+  const { id } = req.body.member;
+  const { companyID } = req.body.member.contract;
+  const { endNo } = req.body;
+  
   try {
-    const newPerson = await person.save();
-    res.status(201).json(newPerson);
+    if(req.body){
+      const per = res.body;
+      const createXML = await convertPerson(per)
+      const projectRoot = path.resolve(__dirname, '../'); // Assumes this script is located in a subdirectory
+      const savePath = path.join(projectRoot, 'xmlFiles');
+      await saveXmlToFile(id, createXML, savePath);
+      // const postXmlDataToApi = await postXmlToApi(xmlData, fileName);
+      await postJsonToApi(per, id)
+      let person = await getPersonByCardNoEndNoPolNo(id, endNo, companyID);
+      if (person) {
+        // If person exists, update the existing record
+        const updatedPerson = await Person.findByIdAndUpdate(req.body._id, req.body, { new: true });
+        res.status(200).json(updatedPerson);
+      } else {
+        // If person does not exist, create a new one
+        person = new Person(req.body);
+        await person.save();
+        res.status(201).json(person);
+      }
+    }
+
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -70,38 +88,82 @@ const deletePersonById = async (req, res) => {
 };
 
 const getPersonByCardNoEndNoPolNo = async (cardNo, endNo, polNo) => {
-    try {
-      const person = await Person.findOne({ 'member.id': cardNo, 'endNo': endNo, 'member.contract.companyID': polNo });
-      return person;
-    } catch (error) {
-      console.error('Error fetching person:', error);
-      throw new Error('Error fetching person');
-    }
+  try {
+    const person = await Person.findOne(
+      { 'member.id': cardNo, 'endNo': endNo, 'member.contract.companyID': polNo },
+      { __v: 0, _id: 0 }
+    );
+    return person;
+  } catch (error) {
+    console.error('Error fetching person:', error);
+    throw new Error('Error fetching person');
+  }
+};
+
+const convertPerson = (per, res) => {
+  const person = per;
+  const header = {
+    SenderID: "A025",
+    ReceiverID: "HAAD",
+    TransactionDate: "23/06/2024 12:29",
+    RecordCount: 1,
+    DispositionFlag: process.env.NODE_ENV
   };
 
-  const convertPersonToJson = (req, res) => {
-    const person = req.body.person;
-    const header = {
-      SenderID: "A025",
-      ReceiverID: "HAAD",
-      TransactionDate: "23/06/2024 12:29",
-      RecordCount: 1,
-      DispositionFlag: process.env.NODE_ENV
-  };
-  
-    if (!person || !header) {
-      return res.status(400).json({ message: 'Invalid input data' });
-    }
-  
-    try {
-      const xml = convertJsonToXml(person, header);
-      res.set('Content-Type', 'application/xml');
-      res.send(xml);
-    } catch (error) {
-      console.error('Error converting JSON to XML:', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  };
+  if (!person || !header) {
+    return res.status(400).json({ message: 'Invalid input data' });
+  }
+  try {
+    const xml = convertJsonToXml(person, header);
+    return xml;
+  } catch (error) {
+    console.error('Error converting JSON to XML:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+const saveXmlToFile = (fName, xmlData, filePath) => {
+  try {
+    const now = new Date();
+    const fileName = `${fName}.xml`; // Example file name format: person_data_2024-06-24T12-30-00Z.xml
+    const fullPath = path.join(filePath, fileName); // Construct full path with directory and file name
+
+    // Write XML data to file
+    fs.writeFileSync(fullPath, xmlData);
+
+    console.log(`XML data saved to ${fullPath}`);
+  } catch (error) {
+    console.error('Error saving XML data to file:', error);
+  }
+};
+
+// Function to post XML data to an API
+// const postXmlToApi = async (xmlData, fileName) => {
+//   try {
+//     const response = await axios.post(process.env.SERVER_URL_DOTNET, {
+//       xmlData: xmlData,
+//       fileName: fileName
+//     });
+//     console.log('API response:', response.data);
+//   } catch (error) {
+//     console.error('Error posting XML data to API:', error);
+//   }
+// };
+
+const postJsonToApi = async (jsonData, memberId) => {
+  try {
+    console.log("jsonData: ", jsonData);
+    console.log("memberId: ", memberId);
+    const response = await axios.post(process.env.SERVER_URL_DOTNET, {
+      jsonData: jsonData,
+      fileName: memberId
+    });
+    console.log('API response:', response.data);
+  } catch (error) {
+    console.error('Error posting XML data to API:', error);
+  }
+};
+
 
 module.exports = {
   getAllPersons,
@@ -110,5 +172,5 @@ module.exports = {
   updatePersonById,
   deletePersonById,
   getPersonByCardNoEndNoPolNo,
-  convertPersonToJson,
+  convertPerson,
 };

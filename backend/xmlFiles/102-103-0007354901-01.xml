@@ -1,0 +1,54 @@
+<?xml version='1.0'?>
+<Person.Register>
+    <Header>
+        <SenderID>A025</SenderID>
+        <ReceiverID>HAAD</ReceiverID>
+        <TransactionDate>23/06/2024 12:29</TransactionDate>
+        <RecordCount>1</RecordCount>
+        <DispositionFlag>TEST</DispositionFlag>
+    </Header>
+    <Person>
+        <member>
+            <contract>
+                <packageName>57245</packageName>
+                <startDate>08/06/2024</startDate>
+                <renewalDate>08/06/2024</renewalDate>
+                <expiryDate>09/04/2025</expiryDate>
+                <grossPremium>2642.5</grossPremium>
+                <policyHolder>6</policyHolder>
+                <companyID>P/02/2024/000101</companyID>
+                <vat>132.12</vat>
+                <collectedPremium>2774.62</collectedPremium>
+                <status>New</status>
+                <vatpercent>2</vatpercent>
+                <policyNumber>farhan1234</policyNumber>
+            </contract>
+            <id>102-103-0007354901-01</id>
+            <relation>Spouse</relation>
+            <relationTo>102-103-0006455901-01</relationTo>
+        </member>
+        <_id>6679171d5ef7bfd20a192b85</_id>
+        <unifiedNumber>80788178</unifiedNumber>
+        <firstNameEn>SADAF IQBAL ALI YOUSAF</firstNameEn>
+        <middleNameEn>IQBAL</middleNameEn>
+        <lastNameEn>ALI YOUSAF</lastNameEn>
+        <firstNameAr>صدف اقبال على يوسف</firstNameAr>
+        <middleNameAr>اقبال</middleNameAr>
+        <lastNameAr>يوسف على</lastNameAr>
+        <contactNumber>NA</contactNumber>
+        <birthDate>04/12/1988</birthDate>
+        <gender>0</gender>
+        <nationality>Pakistani</nationality>
+        <nationalityCode>200</nationalityCode>
+        <city>ABU DHABI</city>
+        <passportNumber>YN1333481</passportNumber>
+        <emiratesIDNumber>111-1111-1111111-1</emiratesIDNumber>
+        <sponsorNumber>37134332</sponsorNumber>
+        <sponsorNameEn>ALI YOUSAF MUHAMMAD YOUSAF</sponsorNameEn>
+        <sponsorNameAr>على يوسف محمد يوسف</sponsorNameAr>
+        <endNo>31</endNo>
+        <__v>0</__v>
+        <visaNumber>50far50</visaNumber>
+        <sponsorCardNumber>farhan2325</sponsorCardNumber>
+    </Person>
+</Person.Register>

@@ -36,7 +36,7 @@ const personSchema = new mongoose.Schema({
       policyNumber: String,
       companyID: String,
       vat: String,
-      vatPercent: String,
+      vatpercent: String,
       collectedPremium: String,
       status: String,
     },
