@@ -91,7 +91,7 @@ const EditPersonForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/person', person);
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/person`, person);
       console.log('Form submitted successfully:', response.data);
       alert('Form submitted successfully');
     } catch (error) {

@@ -1,0 +1,47 @@
+<Person.Register xmlns:tns="http://www.haad.ae/DataDictionary/CommonTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.haad.ae/DataDictionary/CommonTypes/PersonRegister.xsd">
+<Header>
+<SenderID>A025</SenderID>
+<ReceiverID>HAAD</ReceiverID>
+<TransactionDate>23/06/2024 12:29</TransactionDate>
+<RecordCount>1</RecordCount>
+<DispositionFlag>TEST</DispositionFlag>
+</Header>
+<Person>
+<UnifiedNumber>47318284</UnifiedNumber>
+<FirstNameEn>LINA TAISER DIAB MOHD</FirstNameEn>
+<MiddleNameEn>TAISER</MiddleNameEn>
+<LastNameEn>DIAB MOHD</LastNameEn>
+<FirstNameAr>لينا تيسير ذياب محمد</FirstNameAr>
+<MiddleNameAr>تيسير</MiddleNameAr>
+<LastNameAr>محمد ذياب</LastNameAr>
+<ContactNumber>0527993472</ContactNumber>
+<BirthDate>17/04/1992</BirthDate>
+<Gender>0</Gender>
+<Nationality>Jordanian</Nationality>
+<NationalityCode>3</NationalityCode>
+<City>ABU DHABI</City>
+<PassportNumber>Q639300</PassportNumber>
+<EmiratesIDNumber>784-1992-1632171-3</EmiratesIDNumber>
+<SponsorNumber>38749916</SponsorNumber>
+<SponsorNameEn>YASAR ALI FAREED KHLAIF</SponsorNameEn>
+<SponsorNameAr>يسار على فريد خليف</SponsorNameAr>
+<Member>
+<ID>102-103-0006284001-01</ID>
+<Relation>Spouse</Relation>
+<RelationTo>102-103-0006050601-01</RelationTo>
+<Contract>
+<PackageName>53499</PackageName>
+<StartDate>01/06/2021</StartDate>
+<RenewalDate>01/06/2021</RenewalDate>
+<ExpiryDate>31/05/2025</ExpiryDate>
+<GrossPremium>9172</GrossPremium>
+<PolicyHolder>6</PolicyHolder>
+<CompanyID>P/08/2024/000239</CompanyID>
+<CollectedPremium>9630.6</CollectedPremium>
+<VAT>458.6</VAT>
+<VATPercent>5</VATPercent>
+<Status>New</Status>
+</Contract>
+</Member>
+</Person>
+</Person.Register>

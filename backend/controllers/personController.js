@@ -1,8 +1,7 @@
 // controllers/personController.js
 
-const Person = require('../models/Person');
-const helper = require('../helper/shafafia.js')
-
+const Person = require('../models/person');
+const { convertJsonToXml } = require('../helper/xmlHelper');
 // GET all persons
 const getAllPersons = async (req, res) => {
   try {
@@ -80,6 +79,30 @@ const getPersonByCardNoEndNoPolNo = async (cardNo, endNo, polNo) => {
     }
   };
 
+  const convertPersonToJson = (req, res) => {
+    const person = req.body.person;
+    const header = {
+      SenderID: "A025",
+      ReceiverID: "HAAD",
+      TransactionDate: "23/06/2024 12:29",
+      RecordCount: 1,
+      DispositionFlag: process.env.NODE_ENV
+  };
+  
+    if (!person || !header) {
+      return res.status(400).json({ message: 'Invalid input data' });
+    }
+  
+    try {
+      const xml = convertJsonToXml(person, header);
+      res.set('Content-Type', 'application/xml');
+      res.send(xml);
+    } catch (error) {
+      console.error('Error converting JSON to XML:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+
 module.exports = {
   getAllPersons,
   getPersonById,
@@ -87,4 +110,5 @@ module.exports = {
   updatePersonById,
   deletePersonById,
   getPersonByCardNoEndNoPolNo,
+  convertPersonToJson,
 };

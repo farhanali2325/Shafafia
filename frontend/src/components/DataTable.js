@@ -23,7 +23,7 @@ const Datatable = ({ data }) => {
   
     try {
       // Check MongoDB first
-      const mongoDBResponse = await axios.post(`http://localhost:5000/api/person`, payload); // Replace with actual route and ID logic
+      const mongoDBResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/person`, payload); // Replace with actual route and ID logic
   
       if (mongoDBResponse.data) {
         // Record found in MongoDB
@@ -35,7 +35,8 @@ const Datatable = ({ data }) => {
       } else {
         // Record not found in MongoDB, fetch from INHOUSE
         console.log('Record not found in MongoDB, fetching from INHOUSE...');
-        const inhouseResponse = await axios.post('http://INHOUSE:8089/Policy/MemberDetails', payload);
+        const inhouseResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/MemberDetails`, payload);
+
         const memberData = inhouseResponse.data;
         console.log('memberData:', memberData);
   
