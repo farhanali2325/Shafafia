@@ -30,7 +30,7 @@ const HorizontalForm = ({ onSearch }) => {
     
     try {
       console.log(searchParams);
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/EndorsementDetails`, searchParams);
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}/api/Policy/EndorsementDetails`, searchParams);
       console.log(response.data);
       onSearch(response.data);
     } catch (error) {

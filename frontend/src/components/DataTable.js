@@ -35,7 +35,7 @@ const Datatable = ({ data }) => {
       } else {
         // Record not found in MongoDB, fetch from INHOUSE
         console.log('Record not found in MongoDB, fetching from INHOUSE...');
-        const inhouseResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/MemberDetails`, payload);
+        const inhouseResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}/api/Policy/MemberDetails`, payload);
 
         const memberData = inhouseResponse.data;
         console.log('memberData:', memberData);
