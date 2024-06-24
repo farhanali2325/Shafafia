@@ -5,7 +5,7 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}/:path*`, // Proxy to Backend
+        destination: 'http://inhouse:8089/:path*', // Proxy to Backend
       },
     ];
   },
