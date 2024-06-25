@@ -23,7 +23,6 @@ router.post('/person', async (req, res) => {
     const { cardNo, endNo, polNo } = req.body;
   
     try {
-      console.log("Request body:", req.body);
       const person = await personController.getPersonByCardNoEndNoPolNo(cardNo, endNo, polNo);
   
       if (!person) {
