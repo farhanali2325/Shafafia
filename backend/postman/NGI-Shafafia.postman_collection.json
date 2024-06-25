@@ -1,0 +1,107 @@
+{
+	"info": {
+		"_postman_id": "c44567d2-29d5-4393-9acf-075048b449a3",
+		"name": "NGI-Shafafia",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "34501974",
+		"_collection_link": "https://ngiuae.postman.co/workspace/NGI-Portal~b1a0f535-15b2-490c-8f4d-e069babee787/collection/34501974-c44567d2-29d5-4393-9acf-075048b449a3?action=share&source=collection_link&creator=34501974"
+	},
+	"item": [
+		{
+			"name": "https://INHOUSE:8089/Policy/MemberDetails",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n \"cardNo\": \"102-103-0007354901-01\",\r\n \"polNo\":\"P/02/2024/000101\",\r\n \"endNo\":\"31\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://INHOUSE:8089/Policy/MemberDetails"
+			},
+			"response": []
+		},
+		{
+			"name": "https://INHOUSE:8089/Policy/EndorsementDetails",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"eidNo\":\"111-1111-1111111-1\",\r\n    \"cardNo\": \"102-103-0007354901-01\",\r\n    \"fromDate\":\"01/04/2023\",\r\n    \"toDate\":\"24/06/2024\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://INHOUSE:8089/Policy/EndorsementDetails"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:5000/api/persons",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:5000/api/persons"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:5000/api/persons/66752428b9a1e0b0d2763157",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:5000/api/persons/66752428b9a1e0b0d2763157"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:5000/api/person",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n \"cardNo\": \"102-103-0007354901-01\",\r\n \"polNo\":\"P/02/2024/000101\",\r\n \"endNo\":\"31\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:5000/api/person"
+			},
+			"response": []
+		},
+		{
+			"name": "https://INHOUSE:8089/Policy/GetNationality",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "https://INHOUSE:8089/Policy/GetNationality"
+			},
+			"response": []
+		}
+	]
+}
