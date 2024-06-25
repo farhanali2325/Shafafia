@@ -127,11 +127,8 @@ const saveXmlToFile = (fName, xmlData, filePath) => {
     const now = new Date();
     const fileName = `${fName}.xml`; // Example file name format: person_data_2024-06-24T12-30-00Z.xml
     const fullPath = path.join(filePath, fileName); // Construct full path with directory and file name
-
     // Write XML data to file
     fs.writeFileSync(fullPath, xmlData);
-
-    console.log(`XML data saved to ${fullPath}`);
   } catch (error) {
     console.error('Error saving XML data to file:', error);
   }
@@ -152,13 +149,10 @@ const saveXmlToFile = (fName, xmlData, filePath) => {
 
 const postJsonToApi = async (jsonData, memberId) => {
   try {
-    console.log("jsonData: ", jsonData);
-    console.log("memberId: ", memberId);
     const response = await axios.post(process.env.SERVER_URL_DOTNET, {
       jsonData: jsonData,
       fileName: memberId
     });
-    console.log('API response:', response.data);
   } catch (error) {
     console.error('Error posting XML data to API:', error);
   }
