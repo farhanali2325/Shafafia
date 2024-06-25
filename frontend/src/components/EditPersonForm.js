@@ -7,12 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const EditPersonForm = () => {
   const router = useRouter();
   const { data } = router.query;
-  // Parsing the JSON string to an object
-const parsedData = JSON.parse(data);
-
-console.log("data: ", parsedData); // This should log the entire data object
-console.log("data.person: ", parsedData.person); // This should log the person object
-console.log("data.nationValue: ", parsedData.nationValue); // This should log the nationValue array
+  const parsedData = JSON.parse(data);
   const [person, setPerson] = useState({
     unifiedNumber: '',
     firstNameEn: '',
@@ -55,9 +50,8 @@ console.log("data.nationValue: ", parsedData.nationValue); // This should log th
       },
     },
   });
-
   const [nationalities, setNationalities] = useState([]);
-
+  
   useEffect(() => {
     if (data) {
       setPerson(parsedData.person);
