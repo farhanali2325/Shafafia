@@ -7,7 +7,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const EditPersonForm = () => {
   const router = useRouter();
   const { data } = router.query;
-  const parsedData = JSON.parse(data);
   const [person, setPerson] = useState({
     unifiedNumber: '',
     firstNameEn: '',
@@ -54,10 +53,41 @@ const EditPersonForm = () => {
   
   useEffect(() => {
     if (data) {
-      setPerson(parsedData.person);
-      setNationalities(parsedData.nationValue);
+      const parsedData = JSON.parse(data);
+      setPerson(parsedData);
     }
   }, [data]);
+
+  useEffect(() => {
+    const fetchNationalities = async () => {
+      try {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/GetNationality`);
+        console.log('nationalitiesList:', response.data);
+        setNationalities(response.data);
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error:', error.message);
+      }
+    };
+    fetchNationalities();
+  }, []);
+
+  const handleDownload = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL_DOTNET}api/download-csv`, {
+        responseType: 'blob',
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'downloaded-file.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error while downloading file:', error);
+    }
+  };
 
   const handleChange = (field, value) => {
     setPerson({
@@ -217,7 +247,7 @@ const EditPersonForm = () => {
             <Form.Control
               type="text"
               name="gender"
-              value={person.gender}
+              value={person.gender === "0" ? "Female" : "Male"}
               onChange={(e) => handleChange('gender', e.target.value)}
             />
           </Form.Group>
@@ -525,9 +555,18 @@ const EditPersonForm = () => {
         </Row>
 
         {/* Submit Button */}
-        <Button variant="primary" type="submit">
-          Save
-        </Button>
+        <Row>
+          <Col md={1}>
+            <Button variant="primary" type="submit">
+              Save
+            </Button>
+          </Col>
+          <Col md={2}>
+            <Button variant="secondary" type="button" onClick={handleDownload}>
+              Download Response
+            </Button>
+          </Col>
+        </Row>
       </Form>
     </Container>
   );

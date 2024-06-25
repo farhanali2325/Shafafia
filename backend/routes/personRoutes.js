@@ -19,6 +19,8 @@ router.patch('/persons/:id', personController.updatePersonById);
 // DELETE a person by ID
 router.delete('/persons/:id', personController.deletePersonById);
 
+router.get('/download-csv', personController.downloadCSV);
+
 router.post('/person', async (req, res) => {
     const { cardNo, endNo, polNo } = req.body;
   
@@ -35,5 +37,7 @@ router.post('/person', async (req, res) => {
       res.status(500).json({ message: 'Internal server error' });
     }
   });
+
+
   
   module.exports = router;
