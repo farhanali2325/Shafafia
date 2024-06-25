@@ -7,7 +7,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const EditPersonForm = () => {
   const router = useRouter();
   const { data } = router.query;
+  // Parsing the JSON string to an object
+const parsedData = JSON.parse(data);
 
+console.log("data: ", parsedData); // This should log the entire data object
+console.log("data.person: ", parsedData.person); // This should log the person object
+console.log("data.nationValue: ", parsedData.nationValue); // This should log the nationValue array
   const [person, setPerson] = useState({
     unifiedNumber: '',
     firstNameEn: '',
@@ -51,9 +56,12 @@ const EditPersonForm = () => {
     },
   });
 
+  const [nationalities, setNationalities] = useState([]);
+
   useEffect(() => {
     if (data) {
-      setPerson(JSON.parse(data));
+      setPerson(parsedData.person);
+      setNationalities(parsedData.nationValue);
     }
   }, [data]);
 
@@ -224,11 +232,18 @@ const EditPersonForm = () => {
           <Form.Group controlId="nationality">
             <Form.Label>Nationality</Form.Label>
             <Form.Control
-              type="text"
+              as="select"
               name="nationality"
               value={person.nationality}
               onChange={(e) => handleChange('nationality', e.target.value)}
-            />
+            >
+              <option value="">Select Nationality</option>
+              {nationalities.map((nationality) => (
+                <option key={nationality.nationValue} value={nationality.nationValue}>
+                  {nationality.nationValue}
+                </option>
+              ))}
+            </Form.Control>
           </Form.Group>
         </Col>
         <Col md={3}>
