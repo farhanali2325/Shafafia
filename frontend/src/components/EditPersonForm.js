@@ -240,7 +240,8 @@ const EditPersonForm = () => {
             </Form.Control>
           </Form.Group>
         </Col>
-        <Col md={3}>
+        {/* test */}
+        <Col md={3}> 
           <Form.Group controlId="nationalityCode">
             <Form.Label>Nationality Code</Form.Label>
             <Form.Control
