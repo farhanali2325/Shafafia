@@ -20,7 +20,6 @@ router.patch('/persons/:id', personController.updatePersonById);
 router.delete('/persons/:id', personController.deletePersonById);
 
 router.post('/download-csv', (req, res) => {
-  console.log("req.body: ", req.body);
   const filePath = req.body;
 
   // Check if the file exists

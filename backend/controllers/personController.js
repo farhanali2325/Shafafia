@@ -107,14 +107,7 @@ const validateData = (person, fileName) => {
 
 const postJsonToApi = async (person) => {
   try {
-    // Ensure the data structure is correct
-    console.log("personData: ", person);
-
-    console.log("Server URL: ", process.env.SERVER_URL_DOTNET); // Log the server URL
-
     const response = await axios.post(`${process.env.SERVER_URL_DOTNET}api/PersonRegisters`, person);
-
-    console.log("postJsonToApi.response: ", response.data);
     return response.data;
   } catch (error) {
     console.error('Error posting data to API:', error);
@@ -125,75 +118,6 @@ const postJsonToApi = async (person) => {
     }
   }
 };
-
-
-// const postJsonToApi = async (person, memberId) => {
-//   try {
-//     validateData(person, memberId);
-
-//     console.log("person: ", person);
-//     console.log("memberId: ", memberId);
-//     console.log("Server URL: ", process.env.SERVER_URL_DOTNET); // Log the server URL
-//     console.log("person: ", person)
-//     const newpers = `{"member": {
-//         "contract": {
-//           "packageName": "57245",
-//           "startDate": "08/06/2024",
-//           "renewalDate": "08/06/2024",
-//           "expiryDate": "09/04/2025",
-//           "grossPremium": "2642.5",
-//           "policyHolder": "6",
-//           "companyID": "P/02/2024/000101",
-//           "vat": "132.12",
-//           "collectedPremium": "2774.62",
-//           "status": "New",
-//           "vatpercent": "2",
-//           "policyNumber": "farhan1234"
-//         },
-//         "id": "102-103-0007354901-01",
-//         "relation": "Spouse",
-//         "relationTo": "102-103-0006455901-01"
-//       },
-//       "_id": "6679171d5ef7bfd20a192b85",
-//       "unifiedNumber": "80788178",
-//       "firstNameEn": "SADAF IQBAL ALI YOUSAF",
-//       "middleNameEn": "IQBAL",
-//       "lastNameEn": "ALI YOUSAF",
-//       "firstNameAr": "صدف اقبال على يوسف",
-//       "middleNameAr": "اقبال",
-//       "lastNameAr": "يوسف على",
-//       "contactNumber": "NA",
-//       "birthDate": "04/12/1988",
-//       "gender": "0",
-//       "nationality": "Pakistani",
-//       "nationalityCode": "200",
-//       "city": "ABU DHABI",
-//       "passportNumber": "YN1333481",
-//       "emiratesIDNumber": "111-1111-1111111-1",
-//       "sponsorNumber": "37134332",
-//       "sponsorNameEn": "ALI YOUSAF MUHAMMAD YOUSAF",
-//       "sponsorNameAr": "على يوسف محمد يوسف",
-//       "endNo": "31",
-//       "__v": "0",
-//       "visaNumber": "50far50",
-//       "sponsorCardNumber": "farhan2325"
-// }`;
-//     const response = await axios.post(`${process.env.SERVER_URL_DOTNET}api/PersonRegisters`, {
-//       newpers,
-//     });
-
-//     console.log("postJsonToApi.response: ", response.data);
-//     return response.data;
-//   } catch (error) {
-//     console.error('Error posting XML data to API:', error);
-//     if (error.response) {
-//       console.log('Response data:', error.response.data);
-//       console.log('Response status:', error.response.status);
-//       console.log('Response headers:', error.response.headers);
-//     }
-//   }
-// };
-
 
 module.exports = {
   getAllPersons,

@@ -63,7 +63,6 @@ const EditPersonForm = () => {
     const fetchNationalities = async () => {
       try {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/GetNationality`);
-        console.log('nationalitiesList:', response.data);
         setNationalities(response.data);
       } catch (error) {
         console.error('Error:', error);
@@ -134,7 +133,6 @@ const EditPersonForm = () => {
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/persons`, person);
       // const response = await axios.post(`http://pikachucoc/api/PersonRegisters`, person);
-      console.log('Form submitted successfully:', response);
       if(response.data.fileInfo.csvFilePath){
         setFilePath(response.data.fileInfo.csvFilePath)
         //alert('Form submitted successfully');
