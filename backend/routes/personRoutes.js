@@ -19,28 +19,25 @@ router.patch('/persons/:id', personController.updatePersonById);
 // DELETE a person by ID
 router.delete('/persons/:id', personController.deletePersonById);
 
-router.post('/download-csv', (req, res) => {
-  const filePath = req.body;
+router.get('/download-csv', (req, res) => {
+  const filePath = req.query.filePath; // Get filePath from query parameter
 
   // Check if the file exists
-  fs.access(filePath, fs.constants.F_OK, (err) => {
-      if (err) {
-          console.error('File does not exist', err);
-          return res.status(404).send({
-              message: "File not found.",
-          });
-      }
+  if (fs.existsSync(filePath)) {
+    // Set the appropriate headers
+    const fileName = path.basename(filePath);
+    res.setHeader('Content-disposition', `attachment; filename=${fileName}`);
+    res.setHeader('Content-type', 'application/octet-stream'); // Set appropriate content type
 
-      // Send the file for download
-      res.download(filePath, 'ErrorsReport_NEW.csv', (err) => {
-          if (err) {
-              console.error('Error downloading the file', err);
-              return res.status(500).send({
-                  message: "Could not download the file. " + err,
-              });
-          }
-      });
-  });
+    // Create a readable stream of the file
+    const fileStream = fs.createReadStream(filePath);
+
+    // Pipe the stream response to the client
+    fileStream.pipe(res);
+  } else {
+    // If file doesn't exist, return 404 Not Found
+    res.status(404).send('File not found');
+  }
 });
 
 router.post('/person', async (req, res) => {

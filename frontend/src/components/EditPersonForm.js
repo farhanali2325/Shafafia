@@ -73,27 +73,44 @@ const EditPersonForm = () => {
   }, []);
 
   const downloadCsv = async () => {
-    try {
-      if(filePath){
-        console.log("filePath: ", filePath)
+    if(filePath){
+      try {
+
         const response = await axios({
           url: `${process.env.NEXT_PUBLIC_SERVER_URL}api/download-csv`, 
-          filePath,
-          method: 'POST',
-          responseType: 'blob', // Important
-      });
-        // Create a link element, hide it, direct it towards the blob, and then 'click' it programmatically
+          method: 'GET',
+          params: {
+            filePath: filePath // Pass dynamic file path here
+          },
+          responseType: 'blob', // Important: responseType as 'blob' for binary data
+        });
+    
+        // Create a link element and click it to trigger the download
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'ErrorsReport_NEW.csv'); // or any other extension
+        
+        // Extract file name from the response headers if available
+        const contentDisposition = response.headers['content-disposition'];
+        let fileName = 'downloaded-file.csv'; // Default file name
+        if (contentDisposition) {
+          const match = contentDisposition.match(/filename="(.+)"/);
+          if (match.length > 1) {
+            fileName = match[1];
+          }
+        }
+    
+        link.setAttribute('download', fileName);
         document.body.appendChild(link);
         link.click();
-        link.remove();
+    
+        // Clean up: remove the temporary link
+        link.parentNode.removeChild(link);
+    
+      } catch (error) {
+        console.error('Error downloading file:', error);
+        // Handle error
       }
-    } catch (error) {
-        console.error('Error downloading the CSV file:', error.response ? error.response.data : error.message);
-        alert('Error downloading the CSV file: ' + (error.response ? error.response.data.message : error.message));
     }
 };
 
@@ -135,7 +152,7 @@ const EditPersonForm = () => {
       // const response = await axios.post(`http://pikachucoc/api/PersonRegisters`, person);
       if(response.data.fileInfo.csvFilePath){
         setFilePath(response.data.fileInfo.csvFilePath)
-        //alert('Form submitted successfully');
+        alert('Form submitted successfully');
       }
       
     } catch (error) {
@@ -573,11 +590,14 @@ const EditPersonForm = () => {
               Save
             </Button>
           </Col>
-          <Col md={2}>
+          {
+            filePath ? <Col md={2}>
             <Button variant="secondary" type="button" onClick={downloadCsv}>
-              Download Response
+              Download CSV
             </Button>
-          </Col>
+          </Col> : ''
+          }
+          
         </Row>
       </Form>
     </Container>

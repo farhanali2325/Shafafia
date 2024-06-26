@@ -20,7 +20,7 @@ const Datatable = ({ data }) => {
   const handleEdit = async (row) => {
     const { cardNo, polNo, endNo } = row;
     const payload = { cardNo, polNo, endNo };
-  
+    
     try {
       // Check MongoDB first
       const mongoDBResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/person`, payload); // Replace with actual route and ID logic
