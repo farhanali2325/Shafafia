@@ -33,22 +33,14 @@ const createPerson = async (req, res) => {
 
   try {
     if (req.body) {
-      // Call the function to send the data to the external API
-      // const fileInfo = await postJsonToApi(req.body, id);
       let person = await getPersonByCardNoEndNoPolNo(id, endNo, companyID);
-      // Check if person already exists
       if (person) {
         // If person exists, update the existing record
         const updatedPerson = await Person.findByIdAndUpdate(req.body._id, req.body, { new: true });
-        // updatedPerson.fileInfo = fileInfo;
-        // Return the updated person along with fileInfo
         return res.status(200).json({ person: updatedPerson });
       } else {
-        // If person does not exist, create a new one
         person = new Person(req.body);
         await person.save();
-        // person.fileInfo = fileInfo;
-        // Return the new person along with fileInfo
         return res.status(200).json({ person: person });
       }
     }
@@ -96,20 +88,6 @@ const getPersonByCardNoEndNoPolNo = async (cardNo, endNo, polNo) => {
 };
 
 
-const postJsonToApi = async (person) => {
-  try {
-    const response = await axios.post(`${process.env.SERVER_URL_DOTNET}api/PersonRegisters`, person);
-    return response.data;
-  } catch (error) {
-    console.error('Error posting data to API:', error);
-    if (error.response) {
-      console.log('Response data:', error.response.data);
-      console.log('Response status:', error.response.status);
-      console.log('Response headers:', error.response.headers);
-    }
-  }
-};
-
 module.exports = {
   getAllPersons,
   getPersonById,
@@ -117,5 +95,4 @@ module.exports = {
   updatePersonById,
   deletePersonById,
   getPersonByCardNoEndNoPolNo,
-  postJsonToApi,
 };

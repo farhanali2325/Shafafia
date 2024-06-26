@@ -149,11 +149,10 @@ const EditPersonForm = () => {
     event.preventDefault();
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/persons`, person);
-      const fileInfo = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_DOTNET}api/PersonRegisters`, person);
-      console.log(fileInfo.data)
-      if(fileInfo.data.csvFilePath){
-        setFilePath(fileInfo.data.csvFilePath)
-        const uploadStatus = await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}api/persons/${response.data.person._id}`, {'uploadStatus':fileInfo.data.status});
+      const fileInfoResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_DOTNET}api/PersonRegisters`, person);
+      if(fileInfoResponse.data && response.data){
+        setFilePath(fileInfoResponse.data.csvFilePath)
+        const uploadStatus = await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}api/persons/${response.data.person._id}`, {'uploadStatus': fileInfoResponse.data.status});
         alert('Form submitted successfully');
       }
       
