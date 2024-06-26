@@ -24,24 +24,16 @@ const Datatable = ({ data }) => {
     try {
       // Check MongoDB first
       const mongoDBResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/person`, payload); // Replace with actual route and ID logic
-      console.log('mongoDBResponse:', mongoDBResponse);
       if (mongoDBResponse.data) {
-        console.log('mongoDBResponse.data:', mongoDBResponse.data);
         // Record found in MongoDB
-        console.log('Record found in MongoDB:', mongoDBResponse.data);
         router.push({
           pathname: '/edit',
           query: { data: JSON.stringify(mongoDBResponse.data) },
         });
       } else {
-        console.log('Record not found in MongoDB');
         // Record not found in MongoDB, fetch from INHOUSE
-        console.log('Record not found in MongoDB, fetching from INHOUSE...');
         const inhouseResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/MemberDetails`, payload);
-        console.log('inhouseResponse:', inhouseResponse);;
-        const memberData = inhouseResponse.data;
-        console.log('memberData:', memberData);
-  
+        const memberData = inhouseResponse.data;  
         router.push({
           pathname: '/edit',
           query: { data: JSON.stringify(memberData) },

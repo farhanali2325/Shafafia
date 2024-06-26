@@ -15,6 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(bodyParser.json());
 
+
+
 // Routes
 app.use('/api', personRoutes); // Prefix all routes with '/api'
 
