@@ -22,6 +22,7 @@ const personSchema = new mongoose.Schema({
   sponsorNameEn: String,
   sponsorNameAr: String,
   endNo: String,
+  uploadStatus: String,
   member: {
     id: String,
     relation: String,

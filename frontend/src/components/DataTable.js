@@ -57,7 +57,7 @@ const Datatable = ({ data }) => {
     { dataField: 'entryDate', text: 'Entry Date', sort: true },
     { dataField: 'relation', text: 'Relation', sort: true, filter: textFilter() },
     { dataField: 'visaRegion', text: 'Visa Region', sort: true, filter: textFilter() },
-    { dataField: 'validStatus', text: 'Valid Status', sort: true },
+    { dataField: 'validStatus', text: 'Valid Status', sort: true, hidden: true },
     { dataField: 'uploadStatus', text: 'Upload Status', sort: true },
     {
       dataField: 'edit',
@@ -78,6 +78,8 @@ const Datatable = ({ data }) => {
       pagination={paginationFactory()}
       filter={filterFactory()}
       cellEdit={false}
+      wrapperClasses="table-responsive" // Ensures table is responsive on smaller screens
+      headerClasses="thead-dark" // Example of using Bootstrap dark header style
     />
   );
 };

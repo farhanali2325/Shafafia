@@ -96,15 +96,6 @@ const getPersonByCardNoEndNoPolNo = async (cardNo, endNo, polNo) => {
 };
 
 
-const validateData = (person, fileName) => {
-  if (!person || typeof person !== 'object') {
-    throw new Error('Invalid person');
-  }
-  if (!fileName || typeof fileName !== 'string') {
-    throw new Error('Invalid fileName');
-  }
-};
-
 const postJsonToApi = async (person) => {
   try {
     const response = await axios.post(`${process.env.SERVER_URL_DOTNET}api/PersonRegisters`, person);

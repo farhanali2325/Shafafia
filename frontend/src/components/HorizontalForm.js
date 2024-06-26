@@ -30,7 +30,13 @@ const HorizontalForm = ({ onSearch }) => {
     
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/EndorsementDetails`, searchParams);
-      onSearch(response.data);
+      console.log("response: ", response)
+      if(response){
+        onSearch(response.data);
+      } else {
+        alert("No record found");
+      }
+      
     } catch (error) {
       console.error('Error fetching data:', error);
       alert('Error fetching data');

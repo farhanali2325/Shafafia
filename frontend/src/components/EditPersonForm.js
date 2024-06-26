@@ -92,7 +92,7 @@ const EditPersonForm = () => {
         
         // Extract file name from the response headers if available
         const contentDisposition = response.headers['content-disposition'];
-        let fileName = 'downloaded-file.csv'; // Default file name
+        let fileName = `${person.member.id}.csv`; // Default file name
         if (contentDisposition) {
           const match = contentDisposition.match(/filename="(.+)"/);
           if (match.length > 1) {
@@ -150,8 +150,11 @@ const EditPersonForm = () => {
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/persons`, person);
       // const response = await axios.post(`http://pikachucoc/api/PersonRegisters`, person);
+      console.log("response: ", response)
       if(response.data.fileInfo.csvFilePath){
         setFilePath(response.data.fileInfo.csvFilePath)
+        const uploadStatus = await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}api/persons/${response.data.person._id}`, {'iploadStatus':response.data.fileInfo.status});
+        // const uploadStatus = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/persons/${response.data.person._id}`, response.data.fileInfo.status);
         alert('Form submitted successfully');
       }
       
@@ -402,6 +405,22 @@ const EditPersonForm = () => {
               />
             </Form.Group>
           </Col>
+        {/* <Col md={3}>
+          <Form.Group controlId="uploadStatus">
+            <Form.Label>upload Status</Form.Label>
+            <Form.Control
+              type="text"
+              name="uploadStatus"
+              value={person.uploadStatus === 0 ? "Error" : "Success"}
+              readOnly
+              style={{
+                color: person.sponsorNameAr === 0 ? 'red' : 'green',
+                fontWeight: 'bold' // Set fontWeight to 'bold' for bold text
+              }}
+              />
+          </Form.Group>
+        </Col> */}
+          
         </Row>
 
         {/* Member Section */}
