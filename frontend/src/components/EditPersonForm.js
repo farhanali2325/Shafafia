@@ -149,12 +149,11 @@ const EditPersonForm = () => {
     event.preventDefault();
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/persons`, person);
-      // const response = await axios.post(`http://pikachucoc/api/PersonRegisters`, person);
-      console.log("response: ", response)
-      if(response.data.fileInfo.csvFilePath){
-        setFilePath(response.data.fileInfo.csvFilePath)
-        const uploadStatus = await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}api/persons/${response.data.person._id}`, {'iploadStatus':response.data.fileInfo.status});
-        // const uploadStatus = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/persons/${response.data.person._id}`, response.data.fileInfo.status);
+      const fileInfo = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_DOTNET}api/PersonRegisters`, person);
+      console.log(fileInfo.data)
+      if(fileInfo.data.csvFilePath){
+        setFilePath(fileInfo.data.csvFilePath)
+        const uploadStatus = await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}api/persons/${response.data.person._id}`, {'uploadStatus':fileInfo.data.status});
         alert('Form submitted successfully');
       }
       
@@ -405,21 +404,21 @@ const EditPersonForm = () => {
               />
             </Form.Group>
           </Col>
-        {/* <Col md={3}>
+        <Col md={3}>
           <Form.Group controlId="uploadStatus">
             <Form.Label>upload Status</Form.Label>
             <Form.Control
               type="text"
               name="uploadStatus"
-              value={person.uploadStatus === 0 ? "Error" : "Success"}
+              value={person.uploadStatus == 1 ?  "Success" : "Error"}
               readOnly
               style={{
-                color: person.sponsorNameAr === 0 ? 'red' : 'green',
+                color: person.sponsorNameAr == 1 ? 'green' : 'red',
                 fontWeight: 'bold' // Set fontWeight to 'bold' for bold text
               }}
               />
           </Form.Group>
-        </Col> */}
+        </Col>
           
         </Row>
 

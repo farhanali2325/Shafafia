@@ -34,22 +34,22 @@ const createPerson = async (req, res) => {
   try {
     if (req.body) {
       // Call the function to send the data to the external API
-      const fileInfo = await postJsonToApi(req.body, id);
+      // const fileInfo = await postJsonToApi(req.body, id);
       let person = await getPersonByCardNoEndNoPolNo(id, endNo, companyID);
       // Check if person already exists
       if (person) {
         // If person exists, update the existing record
         const updatedPerson = await Person.findByIdAndUpdate(req.body._id, req.body, { new: true });
-        updatedPerson.fileInfo = fileInfo;
+        // updatedPerson.fileInfo = fileInfo;
         // Return the updated person along with fileInfo
-        return res.status(200).json({ person: updatedPerson, fileInfo });
+        return res.status(200).json({ person: updatedPerson });
       } else {
         // If person does not exist, create a new one
         person = new Person(req.body);
         await person.save();
-        person.fileInfo = fileInfo;
+        // person.fileInfo = fileInfo;
         // Return the new person along with fileInfo
-        return res.status(200).json({ person, fileInfo });
+        return res.status(200).json({ person: person });
       }
     }
   } catch (err) {
