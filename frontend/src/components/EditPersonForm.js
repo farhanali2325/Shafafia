@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import style from '../styles/Home.module.css'
 
 const EditPersonForm = () => {
   const router = useRouter();
@@ -51,6 +52,7 @@ const EditPersonForm = () => {
   });
   const [nationalities, setNationalities] = useState([]);
   const [filePath, setFilePath] = useState();
+  const [loading, setLoading] = useState(false); // Add loading state
   
   useEffect(() => {
     if (data) {
@@ -147,18 +149,20 @@ const EditPersonForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true); // Set loading to true when form is submitted
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/persons`, person);
       const fileInfoResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_DOTNET}api/PersonRegisters`, person);
-      if(fileInfoResponse.data && response.data){
-        setFilePath(fileInfoResponse.data.csvFilePath)
-        const uploadStatus = await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}api/persons/${response.data.person._id}`, {'uploadStatus': fileInfoResponse.data.status});
+      if (fileInfoResponse.data && response.data) {
+        setFilePath(fileInfoResponse.data.csvFilePath);
+        const uploadStatus = await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}api/persons/${response.data.person._id}`, { 'uploadStatus': fileInfoResponse.data.status });
         alert('Form submitted successfully');
       }
-      
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('Error submitting form');
+    } finally {
+      setLoading(false); // Set loading to false when response is received or error occurs
     }
   };
 
@@ -602,21 +606,26 @@ const EditPersonForm = () => {
 
         {/* Submit Button */}
         <Row>
-          <Col md={1}>
+          <Col md={2} className="mt-3 mb-6">
             <Button variant="primary" type="submit">
-              Save
+              {loading ? 'Submitting...' : 'Submit'}
             </Button>
           </Col>
-          {
-            filePath ? <Col md={2}>
-            <Button variant="secondary" type="button" onClick={downloadCsv}>
-              Download CSV
-            </Button>
-          </Col> : ''
-          }
-          
+          {filePath && (  
+            <Col md={2} className="mt-3 mb-6">
+              <Button variant="secondary" type="button" onClick={downloadCsv}>
+                Download CSV
+              </Button>
+            </Col>
+          )}
         </Row>
       </Form>
+      {/* { loading &&  <Button style={{backgroundColor: '#04AA6D', border: 'none', color: 'white', padding: '12px 24px', fontSize: '16px'}}><i style={{marginRight: '8px', marginLeft: '-12px'}} class="fa fa-spinner fa-spin"></i>Loading</Button> } */}
+      {loading && (
+        <div className={style.loadingOverlay}>
+          <div className={style.loader}></div>
+        </div>
+      )}
     </Container>
   );
 };

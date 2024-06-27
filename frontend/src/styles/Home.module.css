@@ -112,22 +112,135 @@
 /* Farhan Custom Code Started */
 
 
+/* In Home.module.css */
 .fullWidthContainer {
-  padding-left: 15px;
-  padding-right: 15px;
+  width: 100%;
 }
 
 .formHorizontal {
-  width: 100%;
+  padding: 20px;
 }
 
 .formHorizontal .form-group {
   margin-bottom: 15px;
 }
 
-.formHorizontal .searchButton {
-  width: 100%;
+.formHorizontal label {
+  font-size: 0.875rem; /* Smaller font size for labels */
 }
+
+.formHorizontal .form-control {
+  font-size: 0.875rem; /* Smaller font size for input fields */
+}
+
+.searchButton {
+  width: 100%;
+  font-size: 0.875rem; /* Smaller font size for the button */
+}
+
+
+/* Add this CSS in your CSS file */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it appears above other content */
+}
+
+.loader {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+
+.loader:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #3498db;
+  border-color: #3498db transparent #3498db transparent;
+  animation: loader-spin 1.2s linear infinite;
+}
+
+
+.react-bootstrap-table2-filter {
+  margin-top: 5px; /* Adjust as needed */
+}
+
+/* In Home.module.css or any other CSS file */
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table {
+  font-size: 0.875rem; /* Decrease text size as needed */
+  table-layout: auto !important;
+}
+
+.table td{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px; /* Adjust the width as needed */
+  position: relative;
+}
+
+.tableCellTooltip {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tableCellTooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  background-color: #ffffcc; /* Light yellow background */
+  color: #000; /* Black text */
+  padding: 5px;
+  border-radius: 3px;
+  z-index: 1;
+  max-width: 300px; /* Adjust as needed */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.875rem;
+  line-height: 1.2;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  display: none;
+}
+
+.tableCellTooltip:hover::after {
+  display: block;
+}
+
+
+
+
+@keyframes loader-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+
 
 @media (max-width: 767px) {
   .formHorizontal .form-group {

@@ -8,7 +8,7 @@ const cors = require('cors'); // Import CORS middleware
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-const MONGODB_URI = 'mongodb+srv://farhanali2325:5ZlcOIQFfZhG4gGM@ngi-shafafia.ja9xtxe.mongodb.net/shafafia-coc'; // Replace with your MongoDB URI
+const MONGODB_URI = 'mongodb://localhost:27017/shafafia'; // Replace with your MongoDB URI
 
 // Middleware
 app.use(cors());
