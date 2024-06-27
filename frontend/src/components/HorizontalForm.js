@@ -15,7 +15,6 @@ const HorizontalForm = ({ onSearch }) => {
     return `${day}/${month}/${year}`;
   };
 
- 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const fromDate = dateFrom ? convertDateFormat(dateFrom) : '';
@@ -28,19 +27,8 @@ const HorizontalForm = ({ onSearch }) => {
       toDate,
     };
     
-    try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/EndorsementDetails`, searchParams);
-      console.log("response: ", response)
-      if(response){
-        onSearch(response.data);
-      } else {
-        alert("No record found");
-      }
-      
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      alert('Error fetching data');
-    }
+    // Call onSearch function passed from Home.js with searchParams
+    onSearch(searchParams);
   };
 
   return (
@@ -52,7 +40,7 @@ const HorizontalForm = ({ onSearch }) => {
               <Form.Label>Emirates ID</Form.Label>
               <Form.Control
                 type="text"
-                name="emiratesID"
+                name="emiratesID" 
                 value={emiratesID}
                 onChange={(e) => setEmiratesID(e.target.value)}
               />

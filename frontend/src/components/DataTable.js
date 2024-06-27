@@ -8,13 +8,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
 
-const EditButton = ({ row, onEdit }) => (
-  <button className="btn btn-primary" onClick={() => onEdit(row)}>
+const EditButton = ({ row, onEdit, isDisabled }) => (
+  <button className="btn btn-primary" onClick={() => onEdit(row)} disabled={isDisabled}>
     <i className="fas fa-edit"></i>
   </button>
 );
 
-const Datatable = ({ data }) => {
+const DataTable = ({ data, setData }) => {
   const router = useRouter();
 
   const handleEdit = async (row) => {
@@ -23,7 +23,7 @@ const Datatable = ({ data }) => {
     
     try {
       // Check MongoDB first
-      const mongoDBResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/person`, payload); // Replace with actual route and ID logic
+      const mongoDBResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/person`, payload);
       if (mongoDBResponse.data) {
         // Record found in MongoDB
         router.push({
@@ -33,7 +33,7 @@ const Datatable = ({ data }) => {
       } else {
         // Record not found in MongoDB, fetch from INHOUSE
         const inhouseResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/MemberDetails`, payload);
-        const memberData = inhouseResponse.data;  
+        const memberData = inhouseResponse.data;
         router.push({
           pathname: '/edit',
           query: { data: JSON.stringify(memberData) },
@@ -43,6 +43,14 @@ const Datatable = ({ data }) => {
       console.error('Error:', error);
       alert('Error:', error);
     }
+  };
+
+  const uploadStatusFormatter = (cell, row) => {
+    return (
+      <span style={{ color: cell == 1 ? 'green' : 'red' }}>
+        {cell == 1 ? 'Success' : 'Error'}
+      </span>
+    );
   };
 
   const columns = [
@@ -58,11 +66,11 @@ const Datatable = ({ data }) => {
     { dataField: 'relation', text: 'Relation', sort: true, filter: textFilter() },
     { dataField: 'visaRegion', text: 'Visa Region', sort: true, filter: textFilter() },
     { dataField: 'validStatus', text: 'Valid Status', sort: true, hidden: true },
-    { dataField: 'uploadStatus', text: 'Upload Status', sort: true },
+    { dataField: 'uploadStatus', text: 'Upload Status', sort: true, formatter: uploadStatusFormatter },
     {
       dataField: 'edit',
       text: 'Edit',
-      formatter: (cell, row) => <EditButton row={row} onEdit={handleEdit} />,
+      formatter: (cell, row) => <EditButton row={row} onEdit={handleEdit} isDisabled={row.uploadStatus == 1} />,
     },
   ];
 
@@ -78,10 +86,10 @@ const Datatable = ({ data }) => {
       pagination={paginationFactory()}
       filter={filterFactory()}
       cellEdit={false}
-      wrapperClasses="table-responsive" // Ensures table is responsive on smaller screens
-      headerClasses="thead-dark" // Example of using Bootstrap dark header style
+      wrapperClasses="table-responsive"
+      headerClasses="thead-dark"
     />
   );
 };
 
-export default Datatable;
+export default DataTable;

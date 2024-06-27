@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const personRoutes = require('./routes/personRoutes'); // Adjust path as per your file structure
+const endorsmentRoutes = require('./routes/endorsmentRoutes'); // Adjust path as per your file structure
 
 const cors = require('cors'); // Import CORS middleware
 const app = express();
@@ -19,6 +20,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.use('/api', personRoutes); // Prefix all routes with '/api'
+app.use('/api', endorsmentRoutes); // Prefix all routes with '/api'
 
 // Connect to MongoDB
 mongoose.connect(MONGODB_URI);
