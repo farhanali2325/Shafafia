@@ -15,7 +15,7 @@ const EditButton = ({ row, onEdit, isDisabled }) => (
   </button>
 );
 
-const DataTable = ({ data, setData }) => {
+const DataTable = ({ data }) => {
   const router = useRouter();
 
   const handleEdit = async (row) => {
