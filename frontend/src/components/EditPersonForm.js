@@ -474,6 +474,8 @@ const EditPersonForm = () => {
                 name="contractPackageName"
                 value={person.member.contract.packageName}
                 onChange={(e) => handleContractChange('packageName', e.target.value)}
+                readOnly
+                disabled
               />
             </Form.Group>
           </Col>
@@ -485,6 +487,8 @@ const EditPersonForm = () => {
                 name="contractStartDate"
                 value={person.member.contract.startDate}
                 onChange={(e) => handleContractChange('startDate', e.target.value)}
+                readOnly
+                disabled
               />
             </Form.Group>
           </Col>
@@ -496,6 +500,8 @@ const EditPersonForm = () => {
                 name="contractRenewalDate"
                 value={person.member.contract.renewalDate}
                 onChange={(e) => handleContractChange('renewalDate', e.target.value)}
+                readOnly
+                disabled
               />
             </Form.Group>
           </Col>
@@ -507,6 +513,8 @@ const EditPersonForm = () => {
                 name="contractExpiryDate"
                 value={person.member.contract.expiryDate}
                 onChange={(e) => handleContractChange('expiryDate', e.target.value)}
+                readOnly
+                disabled
               />
             </Form.Group>
           </Col>
@@ -520,6 +528,8 @@ const EditPersonForm = () => {
                 name="contractGrossPremium"
                 value={person.member.contract.grossPremium}
                 onChange={(e) => handleContractChange('grossPremium', e.target.value)}
+                readOnly
+                disabled
               />
             </Form.Group>
           </Col>
@@ -531,6 +541,8 @@ const EditPersonForm = () => {
                 name="contractPolicyHolder"
                 value={person.member.contract.policyHolder}
                 onChange={(e) => handleContractChange('policyHolder', e.target.value)}
+                readOnly
+                disabled
               />
             </Form.Group>
           </Col>
@@ -540,8 +552,10 @@ const EditPersonForm = () => {
               <Form.Control
                 type="text"
                 name="contractPolicyNumber"
-                value={person.member.contract.policyNumber}
+                value={person.member.contract.policyNumber ? person.member.contract.policyNumber : person.member.contract.companyID}
                 onChange={(e) => handleContractChange('policyNumber', e.target.value)}
+                readOnly
+                disabled
               />
             </Form.Group>
           </Col>
@@ -553,6 +567,8 @@ const EditPersonForm = () => {
                 name="contractCompanyID"
                 value={person.member.contract.companyID}
                 onChange={(e) => handleContractChange('companyID', e.target.value)}
+                readOnly
+                disabled
               />
             </Form.Group>
           </Col>
@@ -566,6 +582,8 @@ const EditPersonForm = () => {
                 name="contractVat"
                 value={person.member.contract.vat}
                 onChange={(e) => handleContractChange('vat', e.target.value)}
+                readOnly
+                disabled
               />
             </Form.Group>
           </Col>
@@ -577,6 +595,8 @@ const EditPersonForm = () => {
                 name="contractVatPercent"
                 value={person.member.contract.vatpercent}
                 onChange={(e) => handleContractChange('vatpercent', e.target.value)}
+                readOnly
+                disabled
               />
             </Form.Group>
           </Col>
@@ -588,6 +608,8 @@ const EditPersonForm = () => {
                 name="contractCollectedPremium"
                 value={person.member.contract.collectedPremium}
                 onChange={(e) => handleContractChange('collectedPremium', e.target.value)}
+                readOnly
+                disabled
               />
             </Form.Group>
           </Col>
@@ -599,6 +621,8 @@ const EditPersonForm = () => {
                 name="contractStatus"
                 value={person.member.contract.status}
                 onChange={(e) => handleContractChange('status', e.target.value)}
+                readOnly
+                disabled
               />
             </Form.Group>
           </Col>
