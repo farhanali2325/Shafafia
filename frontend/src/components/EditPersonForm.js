@@ -649,8 +649,8 @@ const EditPersonForm = () => {
         </Row>
       </Form>
       {loading && (
-        <div className={style.loadingOverlay}>
-          <div className={style.loader}></div>
+        <div className={`${style.loadingOverlay}`}>
+          <div className={`${style.loader}`}></div>
         </div>
       )}
     </Container>
