@@ -8,6 +8,7 @@ import style from '../styles/Home.module.css'
 const EditPersonForm = () => {
   const router = useRouter();
   const { data } = router.query;
+  console.log("data: ", data)
   const [person, setPerson] = useState({
     unifiedNumber: '',
     firstNameEn: '',
@@ -155,8 +156,14 @@ const EditPersonForm = () => {
       const fileInfoResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_DOTNET}api/PersonRegisters`, person);
       if (fileInfoResponse.data && response.data) {
         setFilePath(fileInfoResponse.data.csvFilePath);
-        const uploadStatus = await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}api/persons/${response.data.person._id}`, { 'uploadStatus': fileInfoResponse.data.status });
-        alert('Form submitted successfully');
+        const uploadStatusEndorsment = await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}api/persons/${response.data.person._id}`, { 'uploadStatus': 1 });
+        const uploadStatusPerson = await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}api/update-endorsment-status/${response.data.person._id}`, { 'uploadStatus': 1 });
+        if(uploadStatusEndorsment && uploadStatusPerson){
+          alert('Form submitted successfully');
+        } else{
+          alert('Form submitted successfully But status is not update');
+        }
+        
       }
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -167,12 +174,12 @@ const EditPersonForm = () => {
   };
 
   return (
-    <Container>
+    <Container className={`${style.fullWidthContainer} pb-3 mt-3 mb-6`}>
     <Form onSubmit={handleSubmit}>
       {/* Person Section */}
       <h2>Person</h2>
       <Row>
-        <Col md={3}>
+        <Col md={2}>
           <Form.Group controlId="unifiedNumber">
             <Form.Label>Unified Number</Form.Label>
             <Form.Control
@@ -183,7 +190,7 @@ const EditPersonForm = () => {
             />
           </Form.Group>
         </Col>
-        <Col md={3}>
+        <Col md={2}>
           <Form.Group controlId="firstNameEn">
             <Form.Label>First Name (English)</Form.Label>
             <Form.Control
@@ -194,7 +201,7 @@ const EditPersonForm = () => {
             />
           </Form.Group>
         </Col>
-        <Col md={3}>
+        <Col md={2}>
           <Form.Group controlId="middleNameEn">
             <Form.Label>Middle Name (English)</Form.Label>
             <Form.Control
@@ -205,7 +212,7 @@ const EditPersonForm = () => {
             />
           </Form.Group>
         </Col>
-        <Col md={3}>
+        <Col md={2}>
           <Form.Group controlId="lastNameEn">
             <Form.Label>Last Name (English)</Form.Label>
             <Form.Control
@@ -216,9 +223,7 @@ const EditPersonForm = () => {
             />
           </Form.Group>
         </Col>
-      </Row>
-      <Row>
-        <Col md={3}>
+        <Col md={2}>
           <Form.Group controlId="firstNameAr">
             <Form.Label>First Name (Arabic)</Form.Label>
             <Form.Control
@@ -229,7 +234,9 @@ const EditPersonForm = () => {
             />
           </Form.Group>
         </Col>
-        <Col md={3}>
+      </Row>
+      <Row>
+        <Col md={2}>
           <Form.Group controlId="middleNameAr">
             <Form.Label>Middle Name (Arabic)</Form.Label>
             <Form.Control
@@ -240,7 +247,7 @@ const EditPersonForm = () => {
             />
           </Form.Group>
         </Col>
-        <Col md={3}>
+        <Col md={2}>
           <Form.Group controlId="lastNameAr">
             <Form.Label>Last Name (Arabic)</Form.Label>
             <Form.Control
@@ -251,7 +258,7 @@ const EditPersonForm = () => {
             />
           </Form.Group>
         </Col>
-        <Col md={3}>
+        <Col md={2}>
           <Form.Group controlId="contactNumber">
             <Form.Label>Contact Number</Form.Label>
             <Form.Control
@@ -262,9 +269,7 @@ const EditPersonForm = () => {
             />
           </Form.Group>
         </Col>
-      </Row>
-      <Row>
-        <Col md={3}>
+        <Col md={2}>
           <Form.Group controlId="birthDate">
             <Form.Label>Birth Date</Form.Label>
             <Form.Control
@@ -275,7 +280,7 @@ const EditPersonForm = () => {
             />
           </Form.Group>
         </Col>
-        <Col md={3}>
+        <Col md={2}>
           <Form.Group controlId="gender">
             <Form.Label>Gender</Form.Label>
             <Form.Control
@@ -286,7 +291,9 @@ const EditPersonForm = () => {
             />
           </Form.Group>
         </Col>
-        <Col md={3}>
+      </Row>
+      <Row>
+        <Col md={2}>
           <Form.Group controlId="nationality">
             <Form.Label>Nationality</Form.Label>
             <Form.Control
@@ -305,7 +312,7 @@ const EditPersonForm = () => {
           </Form.Group>
         </Col>
         {/* test */}
-        <Col md={3}> 
+        <Col md={2}> 
           <Form.Group controlId="nationalityCode">
             <Form.Label>Nationality Code</Form.Label>
             <Form.Control
@@ -316,9 +323,7 @@ const EditPersonForm = () => {
             />
           </Form.Group>
         </Col>
-      </Row>
-      <Row>
-        <Col md={3}>
+        <Col md={2}>
           <Form.Group controlId="city">
             <Form.Label>City</Form.Label>
             <Form.Control
@@ -329,7 +334,7 @@ const EditPersonForm = () => {
             />
           </Form.Group>
         </Col>
-        <Col md={3}>
+        <Col md={2}>
           <Form.Group controlId="passportNumber">
             <Form.Label>Passport Number</Form.Label>
             <Form.Control
@@ -340,7 +345,7 @@ const EditPersonForm = () => {
             />
           </Form.Group>
         </Col>
-        <Col md={3}>
+        <Col md={2}>
           <Form.Group controlId="emiratesIDNumber">
             <Form.Label>Emirates ID Number</Form.Label>
             <Form.Control
@@ -351,7 +356,9 @@ const EditPersonForm = () => {
             />
           </Form.Group>
         </Col>
-        <Col md={3}>
+      </Row>
+      <Row>
+        <Col md={2}>
           <Form.Group controlId="visaNumber">
             <Form.Label>Visa Number</Form.Label>
             <Form.Control
@@ -362,9 +369,7 @@ const EditPersonForm = () => {
             />
           </Form.Group>
         </Col>
-      </Row>
-      <Row>
-        <Col md={3}>
+        <Col md={2}>
           <Form.Group controlId="sponsorNumber">
             <Form.Label>Sponsor Number</Form.Label>
             <Form.Control
@@ -375,7 +380,7 @@ const EditPersonForm = () => {
             />
           </Form.Group>
         </Col>
-        <Col md={3}>
+        <Col md={2}>
           <Form.Group controlId="sponsorCardNumber">
             <Form.Label>Sponsor Card Number</Form.Label>
             <Form.Control
@@ -386,7 +391,7 @@ const EditPersonForm = () => {
             />
           </Form.Group>
         </Col>
-        <Col md={3}>
+        <Col md={2}>
           <Form.Group controlId="sponsorNameEn">
             <Form.Label>Sponsor Name (English)</Form.Label>
             <Form.Control
@@ -397,7 +402,7 @@ const EditPersonForm = () => {
             />
           </Form.Group>
         </Col>
-        <Col md={3}>
+        <Col md={2}>
           <Form.Group controlId="sponsorNameAr">
             <Form.Label>Sponsor Name (Arabic)</Form.Label>
             <Form.Control
@@ -407,7 +412,9 @@ const EditPersonForm = () => {
               />
             </Form.Group>
           </Col>
-        <Col md={3}>
+      </Row>
+      <Row>
+        <Col md={2}>
           <Form.Group controlId="uploadStatus">
             <Form.Label>upload Status</Form.Label>
             <Form.Control
@@ -422,13 +429,12 @@ const EditPersonForm = () => {
               />
           </Form.Group>
         </Col>
-          
-        </Row>
+      </Row>
 
         {/* Member Section */}
         <h2>Member</h2>
         <Row>
-          <Col md={3}>
+          <Col md={2}>
             <Form.Group controlId="memberId">
               <Form.Label>Member ID</Form.Label>
               <Form.Control
@@ -439,7 +445,7 @@ const EditPersonForm = () => {
               />
             </Form.Group>
           </Col>
-          <Col md={3}>
+          <Col md={2}>
             <Form.Group controlId="memberRelation">
               <Form.Label>Relation</Form.Label>
               <Form.Control
@@ -450,7 +456,7 @@ const EditPersonForm = () => {
               />
             </Form.Group>
           </Col>
-          <Col md={3}>
+          <Col md={2}>
             <Form.Group controlId="memberRelationTo">
               <Form.Label>Relation To</Form.Label>
               <Form.Control
@@ -466,7 +472,7 @@ const EditPersonForm = () => {
         {/* Contract Section */}
         <h2>Contract</h2>
         <Row>
-          <Col md={3}>
+          <Col md={2}>
             <Form.Group controlId="contractPackageName">
               <Form.Label>Package Name</Form.Label>
               <Form.Control
@@ -479,7 +485,7 @@ const EditPersonForm = () => {
               />
             </Form.Group>
           </Col>
-          <Col md={3}>
+          <Col md={2}>
             <Form.Group controlId="contractStartDate">
               <Form.Label>Start Date</Form.Label>
               <Form.Control
@@ -492,7 +498,7 @@ const EditPersonForm = () => {
               />
             </Form.Group>
           </Col>
-          <Col md={3}>
+          <Col md={2}>
             <Form.Group controlId="contractRenewalDate">
               <Form.Label>Renewal Date</Form.Label>
               <Form.Control
@@ -505,7 +511,7 @@ const EditPersonForm = () => {
               />
             </Form.Group>
           </Col>
-          <Col md={3}>
+          <Col md={2}>
             <Form.Group controlId="contractExpiryDate">
               <Form.Label>Expiry Date</Form.Label>
               <Form.Control
@@ -518,9 +524,7 @@ const EditPersonForm = () => {
               />
             </Form.Group>
           </Col>
-        </Row>
-        <Row>
-          <Col md={3}>
+          <Col md={2}>
             <Form.Group controlId="contractGrossPremium">
               <Form.Label>Gross Premium</Form.Label>
               <Form.Control
@@ -533,7 +537,10 @@ const EditPersonForm = () => {
               />
             </Form.Group>
           </Col>
-          <Col md={3}>
+        </Row>
+        <Row>
+         
+          <Col md={2}>
             <Form.Group controlId="contractPolicyHolder">
               <Form.Label>Policy Holder</Form.Label>
               <Form.Control
@@ -546,7 +553,7 @@ const EditPersonForm = () => {
               />
             </Form.Group>
           </Col>
-          <Col md={3}>
+          <Col md={2}>
             <Form.Group controlId="contractPolicyNumber">
               <Form.Label>Policy Number</Form.Label>
               <Form.Control
@@ -559,7 +566,7 @@ const EditPersonForm = () => {
               />
             </Form.Group>
           </Col>
-          <Col md={3}>
+          <Col md={2}>
             <Form.Group controlId="contractCompanyID">
               <Form.Label>Company ID</Form.Label>
               <Form.Control
@@ -572,9 +579,7 @@ const EditPersonForm = () => {
               />
             </Form.Group>
           </Col>
-        </Row>
-        <Row>
-          <Col md={3}>
+          <Col md={2}>
             <Form.Group controlId="contractVat">
               <Form.Label>VAT</Form.Label>
               <Form.Control
@@ -587,7 +592,7 @@ const EditPersonForm = () => {
               />
             </Form.Group>
           </Col>
-          <Col md={3}>
+          <Col md={2}>
             <Form.Group controlId="contractVatPercent">
               <Form.Label>VAT Percent</Form.Label>
               <Form.Control
@@ -600,7 +605,9 @@ const EditPersonForm = () => {
               />
             </Form.Group>
           </Col>
-          <Col md={3}>
+        </Row>
+        <Row>
+          <Col md={2}>
             <Form.Group controlId="contractCollectedPremium">
               <Form.Label>Collected Premium</Form.Label>
               <Form.Control
@@ -613,7 +620,7 @@ const EditPersonForm = () => {
               />
             </Form.Group>
           </Col>
-          <Col md={3}>
+          <Col md={2}>
             <Form.Group controlId="contractStatus">
               <Form.Label>Status</Form.Label>
               <Form.Control
@@ -627,7 +634,6 @@ const EditPersonForm = () => {
             </Form.Group>
           </Col>
         </Row>
-
         {/* Submit Button */}
         <Row>
           <Col md={2} className="mt-3 mb-6">
@@ -644,7 +650,6 @@ const EditPersonForm = () => {
           )}
         </Row>
       </Form>
-      {/* { loading &&  <Button style={{backgroundColor: '#04AA6D', border: 'none', color: 'white', padding: '12px 24px', fontSize: '16px'}}><i style={{marginRight: '8px', marginLeft: '-12px'}} class="fa fa-spinner fa-spin"></i>Loading</Button> } */}
       {loading && (
         <div className={style.loadingOverlay}>
           <div className={style.loader}></div>

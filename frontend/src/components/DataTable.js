@@ -17,10 +17,9 @@ const EditButton = ({ row, onEdit, isDisabled }) => (
 
 const DataTable = ({ data }) => {
   const router = useRouter();
-
   const handleEdit = async (row) => {
-    const { cardNo, polNo, endNo } = row;
-    const payload = { cardNo, polNo, endNo };
+    const { cardNo, polNo, endNo, endSrl } = row;
+    const payload = { cardNo, polNo, endSrl };
     
     try {
       // Check MongoDB first
@@ -47,6 +46,7 @@ const DataTable = ({ data }) => {
   };
 
   const uploadStatusFormatter = (cell, row) => {
+    console.log("cell: ", cell)
     return (
       <span style={{ color: cell == 1 ? 'green' : 'red' }}>
         {cell == 1 ? 'Success' : 'Error'}
@@ -68,9 +68,10 @@ const DataTable = ({ data }) => {
   };
 
   const columns = [
-    { dataField: 'polNo', text: 'Policy Number', sort: true, filter: textFilter({ filterCellStyle: { fontSize: '0.75rem', padding: '5px' } }), formatter: cellFormatter, style: { width: '150px' } },
+    { dataField: 'polNo', text: 'Policy Number', sort: true, filter: textFilter({ filterCellStyle: { fontSize: '0.75rem', padding: '5px' } }), formatter: cellFormatter, style: { width: '100px' } },
     { dataField: 'endName', text: 'Endorsement', sort: true, filter: textFilter({ filterCellStyle: { fontSize: '0.75rem', padding: '5px' } }), formatter: cellFormatter, style: { width: '250px' } },
     { dataField: 'endNo', hidden: true },
+    { dataField: 'endSrl',  text: 'End.Srl', sort: true, filter: textFilter({ filterCellStyle: { fontSize: '0.75rem', padding: '5px' } }), formatter: cellFormatter, style: { width: '10px' } },
     { dataField: 'memName', text: 'Member Name', sort: true, filter: textFilter({ filterCellStyle: { fontSize: '0.75rem', padding: '5px' } }), formatter: cellFormatter, style: { width: '300px' } },
     { dataField: 'eidNo', text: 'Emirates ID', sort: true, filter: textFilter({ filterCellStyle: { fontSize: '0.75rem', padding: '5px' } }), formatter: cellFormatter, style: { width: '100px' } },
     { dataField: 'cardNo', text: 'Med. Card Number', sort: true, filter: textFilter({ filterCellStyle: { fontSize: '0.75rem', padding: '5px' } }), formatter: cellFormatter, style: { width: '180px' } },

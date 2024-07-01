@@ -17,7 +17,7 @@ export default function Home() {
       const mongoResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/fetch-endorsments`, searchParams);
   
       // Check if MongoDB response is null or its data array length is 0
-      if (mongoResponse.data == '' ) {
+      if (mongoResponse.data) {
         // If MongoDB response is null or empty, make Java API call
         const javaResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/EndorsementDetails`, searchParams);
         if (javaResponse.data) {

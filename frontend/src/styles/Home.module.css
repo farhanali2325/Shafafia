@@ -115,6 +115,8 @@
 /* In Home.module.css */
 .fullWidthContainer {
   width: 100%;
+  padding: 20px;
+  margin: 0 auto;
 }
 
 .formHorizontal {
@@ -125,13 +127,21 @@
   margin-bottom: 15px;
 }
 
-.formHorizontal label {
+.form-label {
   font-size: 0.875rem; /* Smaller font size for labels */
+  font-weight: bold;
 }
 
-.formHorizontal .form-control {
-  font-size: 0.875rem; /* Smaller font size for input fields */
+.form-control {
+  font-size: 0.875rem !important; /* Smaller font size for input fields */
 }
+
+.form-control:focus {
+  outline: none;
+  box-shadow: 0 0 0 .10rem rgba(13, 110, 253, .25) !important;
+  border-color: blue;
+}
+
 
 .searchButton {
   width: 100%;
@@ -354,10 +364,24 @@
   }
 }
 
+
 /* Tablet and Smaller Desktop */
 @media (min-width: 701px) and (max-width: 1120px) {
   .grid {
     grid-template-columns: repeat(2, 50%);
+  }
+}
+
+
+@media (min-width: 1121px) and (max-width: 1400px) {
+  .fullWidthContainer {
+    max-width: 1320px;
+  }
+}
+
+@media (min-width: 1920px) { 
+  .fullWidthContainer {
+    max-width: 1750px !important;
   }
 }
 
