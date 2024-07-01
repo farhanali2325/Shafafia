@@ -36,7 +36,7 @@ const createPerson = async (req, res) => {
       let person = await getPersonByCardNoEndNoPolNo(id, endNo, companyID);
       if (person) {
         // If person exists, update the existing record
-        const updatedPerson = await Person.findByIdAndUpdate(req.body._id, req.body, { new: true });
+        const updatedPerson = await Person.findByIdAndUpdate(person._id, req.body, { new: true });
         return res.status(200).json({ person: updatedPerson });
       } else {
         person = new Person(req.body);

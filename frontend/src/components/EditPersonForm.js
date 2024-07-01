@@ -8,7 +8,6 @@ import style from '../styles/Home.module.css'
 const EditPersonForm = () => {
   const router = useRouter();
   const { data } = router.query;
-  console.log("data: ", data)
   const [person, setPerson] = useState({
     unifiedNumber: '',
     firstNameEn: '',
@@ -155,18 +154,17 @@ const EditPersonForm = () => {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/persons`, person);
       const fileInfoResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_DOTNET}api/PersonRegisters`, person);
       if (fileInfoResponse.data && response.data) {
-        setFilePath(fileInfoResponse.data.csvFilePath);
         const uploadStatusEndorsment = await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}api/persons/${response.data.person._id}`, { 'uploadStatus': 1 });
-        const uploadStatusPerson = await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}api/update-endorsment-status/${response.data.person._id}`, { 'uploadStatus': 1 });
-        if(uploadStatusEndorsment && uploadStatusPerson){
+        if(uploadStatusEndorsment){
           alert('Form submitted successfully');
         } else{
           alert('Form submitted successfully But status is not update');
         }
-        
+        setFilePath(fileInfoResponse.data.csvFilePath);
       }
     } catch (error) {
       console.error('Error submitting form:', error);
+      setFilePath('');
       alert('Error submitting form');
     } finally {
       setLoading(false); // Set loading to false when response is received or error occurs
