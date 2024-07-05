@@ -9,8 +9,8 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
 import styles from '../styles/Home.module.css'; // Adjust the path as necessary
 
-const EditButton = ({ row, onEdit, isDisabled }) => (
-  <button className="btn btn-primary btn-sm" onClick={() => onEdit(row)} disabled={isDisabled}>
+const EditButton = ({ row, onEdit, isEnabled }) => (
+  <button className="btn btn-primary btn-sm" onClick={() => onEdit(row)} disabled={!isEnabled}>
     <i className="fas fa-edit"></i>
   </button>
 );
@@ -18,26 +18,32 @@ const EditButton = ({ row, onEdit, isDisabled }) => (
 const DataTable = ({ data }) => {
   const router = useRouter();
   const handleEdit = async (row) => {
-    const { cardNo, polNo, endNo, endSrl } = row;
+    const { cardNo, polNo, endSrl } = row;
     const payload = { cardNo, polNo, endSrl };
-    
+  
     try {
-      // Check MongoDB first
-      const mongoDBResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/person`, payload);
-      if (mongoDBResponse.data) {
-        // Record found in MongoDB
-        router.push({
-          pathname: '/edit',
-          query: { data: JSON.stringify(mongoDBResponse.data) },
-        });
-      } else {
-        // Record not found in MongoDB, fetch from INHOUSE
-        const inhouseResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/MemberDetails`, payload);
-        const memberData = inhouseResponse.data;
+      // Fetch data from INHOUSE
+      const inhouseResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/MemberDetails`, payload);
+      const memberData = inhouseResponse.data;
+      console.log('Member Data:', memberData);
+  
+      if (memberData.length > 0 && memberData[0].endSrl == 11) {
         router.push({
           pathname: '/edit',
           query: { data: JSON.stringify(memberData) },
         });
+      } else {
+        // If endSrl is not 11, check the entryDate condition
+        const entryDate = new Date(row.entryDate.split('/').reverse().join('/'));
+        const targetDate = new Date('2022-12-01');
+        if (entryDate < targetDate) {
+          router.push({
+            pathname: '/edit',
+            query: { data: JSON.stringify(memberData) },
+          });
+        } else {
+          alert('Edit not allowed for this entry date');
+        }
       }
     } catch (error) {
       console.error('Error:', error);
@@ -46,7 +52,6 @@ const DataTable = ({ data }) => {
   };
 
   const uploadStatusFormatter = (cell, row) => {
-    console.log("cell: ", cell)
     return (
       <span style={{ color: cell == 1 ? 'green' : 'red' }}>
         {cell == 1 ? 'Success' : 'Error'}
@@ -82,10 +87,16 @@ const DataTable = ({ data }) => {
     { dataField: 'visaRegion', text: 'Visa Region', sort: true, filter: textFilter({ filterCellStyle: { fontSize: '0.75rem', padding: '5px' } }), formatter: cellFormatter, style: { width: '80px' } },
     { dataField: 'validStatus', text: 'Valid Status', sort: true, hidden: true },
     { dataField: 'uploadStatus', text: 'Upload Status', sort: true, formatter: uploadStatusFormatter, filter: uploadStatusFilter, style: { width: '100px' } },
+    { dataField: 'inhouseuploadStatus', text: 'InHouse Upload Status', sort: true, formatter: uploadStatusFormatter, filter: uploadStatusFilter, style: { width: '100px' } },
     {
       dataField: 'edit',
       text: 'Edit',
-      formatter: (cell, row) => <EditButton row={row} onEdit={handleEdit} isDisabled={row.uploadStatus == 1} />,
+      formatter: (cell, row) => {
+        const entryDate = new Date(row.entryDate.split('/').reverse().join('/'));
+        const targetDate = new Date('2022-12-01');
+        const isEnabled = row.endSrl == 11 || entryDate < targetDate;
+        return <EditButton row={row} onEdit={handleEdit} isEnabled={isEnabled} />;
+      },
       style: { width: '80px' }
     },
   ];
