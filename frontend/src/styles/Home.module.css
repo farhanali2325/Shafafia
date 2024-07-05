@@ -7,6 +7,11 @@
   min-height: 100vh;
 }
 
+.row {
+  margin-top: 20px !important;
+  margin-bottom: 40px !important;
+}
+
 .description {
   display: inherit;
   justify-content: inherit;
@@ -264,6 +269,11 @@
 }
 
 
+@media (min-width: 768px) {
+  .searchButton {
+    margin-top: 25px !important;
+  }
+}
 
 /* Farhan Custom Code Ended */
 

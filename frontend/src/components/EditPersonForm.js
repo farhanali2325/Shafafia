@@ -24,12 +24,12 @@ const EditPersonForm = () => {
     city: '',
     passportNumber: '',
     emiratesIDNumber: '',
-    visaNumber: '',
     sponsorNumber: '',
-    sponsorCardNumber: '',
     sponsorNameEn: '',
     sponsorNameAr: '',
-    endNo: '',
+    endSrl: '',
+    uploadStatus: '',
+    uploadResponse: '',
     member: {
       id: '',
       relation: '',
@@ -41,7 +41,6 @@ const EditPersonForm = () => {
         expiryDate: '',
         grossPremium: '',
         policyHolder: '',
-        policyNumber: '',
         companyID: '',
         vat: '',
         vatpercent: '',
@@ -79,7 +78,7 @@ const EditPersonForm = () => {
       try {
 
         const response = await axios({
-          url: `${process.env.NEXT_PUBLIC_SERVER_URL}api/download-csv`, 
+          url: `${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/Download-csv`, 
           method: 'GET',
           params: {
             filePath: filePath // Pass dynamic file path here
@@ -116,12 +115,22 @@ const EditPersonForm = () => {
     }
 };
 
-  const handleChange = (field, value) => {
+const handleChange = (field, value) => {
+  if (field === 'nationality') {
+    const selectedNationality = nationalities.find(n => n.nationValue === value);
+    const nationalityCode = selectedNationality.nationCode ? selectedNationality.nationCode : ''; // Replace 'code' with the actual property name for nationality code
+    setPerson({
+      ...person,
+      nationality: value,
+      nationalityCode: nationalityCode,
+    });
+  } else {
     setPerson({
       ...person,
       [field]: value,
     });
-  };
+  }
+};
 
   const handleMemberChange = (field, value) => {
     setPerson({
@@ -151,16 +160,11 @@ const EditPersonForm = () => {
     event.preventDefault();
     setLoading(true); // Set loading to true when form is submitted
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}api/persons`, person);
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/CreatePersonEntry`, person);
       const fileInfoResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_DOTNET}api/PersonRegisters`, person);
       if (fileInfoResponse.data && response.data) {
-        const uploadStatusEndorsment = await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}api/persons/${response.data.person._id}`, { 'uploadStatus': 1 });
-        if(uploadStatusEndorsment){
-          alert('Form submitted successfully');
-        } else{
-          alert('Form submitted successfully But status is not update');
-        }
         setFilePath(fileInfoResponse.data.csvFilePath);
+        alert('Form submitted successfully');
       }
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -190,7 +194,7 @@ const EditPersonForm = () => {
         </Col>
         <Col md={2}>
           <Form.Group controlId="firstNameEn">
-            <Form.Label>First Name (English)</Form.Label>
+            <Form.Label>First Name (En)</Form.Label>
             <Form.Control
               type="text"
               name="firstNameEn"
@@ -201,7 +205,7 @@ const EditPersonForm = () => {
         </Col>
         <Col md={2}>
           <Form.Group controlId="middleNameEn">
-            <Form.Label>Middle Name (English)</Form.Label>
+            <Form.Label>Middle Name (En)</Form.Label>
             <Form.Control
               type="text"
               name="middleNameEn"
@@ -212,7 +216,7 @@ const EditPersonForm = () => {
         </Col>
         <Col md={2}>
           <Form.Group controlId="lastNameEn">
-            <Form.Label>Last Name (English)</Form.Label>
+            <Form.Label>Last Name (En)</Form.Label>
             <Form.Control
               type="text"
               name="lastNameEn"
@@ -223,7 +227,7 @@ const EditPersonForm = () => {
         </Col>
         <Col md={2}>
           <Form.Group controlId="firstNameAr">
-            <Form.Label>First Name (Arabic)</Form.Label>
+            <Form.Label>First Name (Ar)</Form.Label>
             <Form.Control
               type="text"
               name="firstNameAr"
@@ -236,7 +240,7 @@ const EditPersonForm = () => {
       <Row>
         <Col md={2}>
           <Form.Group controlId="middleNameAr">
-            <Form.Label>Middle Name (Arabic)</Form.Label>
+            <Form.Label>Middle Name (Ar)</Form.Label>
             <Form.Control
               type="text"
               name="middleNameAr"
@@ -247,7 +251,7 @@ const EditPersonForm = () => {
         </Col>
         <Col md={2}>
           <Form.Group controlId="lastNameAr">
-            <Form.Label>Last Name (Arabic)</Form.Label>
+            <Form.Label>Last Name (Ar)</Form.Label>
             <Form.Control
               type="text"
               name="lastNameAr"
@@ -317,7 +321,8 @@ const EditPersonForm = () => {
               type="text"
               name="nationalityCode"
               value={person.nationalityCode}
-              onChange={(e) => handleChange('nationalityCode', e.target.value)}
+              readOnly
+              disabled
             />
           </Form.Group>
         </Col>
@@ -356,17 +361,7 @@ const EditPersonForm = () => {
         </Col>
       </Row>
       <Row>
-        <Col md={2}>
-          <Form.Group controlId="visaNumber">
-            <Form.Label>Visa Number</Form.Label>
-            <Form.Control
-              type="text"
-              name="visaNumber"
-              value={person.visaNumber}
-              onChange={(e) => handleChange('visaNumber', e.target.value)}
-            />
-          </Form.Group>
-        </Col>
+       
         <Col md={2}>
           <Form.Group controlId="sponsorNumber">
             <Form.Label>Sponsor Number</Form.Label>
@@ -379,19 +374,8 @@ const EditPersonForm = () => {
           </Form.Group>
         </Col>
         <Col md={2}>
-          <Form.Group controlId="sponsorCardNumber">
-            <Form.Label>Sponsor Card Number</Form.Label>
-            <Form.Control
-              type="text"
-              name="sponsorCardNumber"
-              value={person.sponsorCardNumber}
-              onChange={(e) => handleChange('sponsorCardNumber', e.target.value)}
-            />
-          </Form.Group>
-        </Col>
-        <Col md={2}>
           <Form.Group controlId="sponsorNameEn">
-            <Form.Label>Sponsor Name (English)</Form.Label>
+            <Form.Label>Sponsor Name (En)</Form.Label>
             <Form.Control
               type="text"
               name="sponsorNameEn"
@@ -402,7 +386,7 @@ const EditPersonForm = () => {
         </Col>
         <Col md={2}>
           <Form.Group controlId="sponsorNameAr">
-            <Form.Label>Sponsor Name (Arabic)</Form.Label>
+            <Form.Label>Sponsor Name (Ar)</Form.Label>
             <Form.Control
               type="text"
               name="sponsorNameAr"
@@ -410,9 +394,7 @@ const EditPersonForm = () => {
               />
             </Form.Group>
           </Col>
-      </Row>
-      <Row>
-        <Col md={2}>
+          <Col md={2}>
           <Form.Group controlId="uploadStatus">
             <Form.Label>upload Status</Form.Label>
             <Form.Control
@@ -430,6 +412,7 @@ const EditPersonForm = () => {
       </Row>
 
         {/* Member Section */}
+        
         <h2>Member</h2>
         <Row>
           <Col md={2}>
@@ -440,6 +423,8 @@ const EditPersonForm = () => {
                 name="memberId"
                 value={person.member.id}
                 onChange={(e) => handleMemberChange('id', e.target.value)}
+                readOnly
+                disabled
               />
             </Form.Group>
           </Col>
@@ -551,19 +536,7 @@ const EditPersonForm = () => {
               />
             </Form.Group>
           </Col>
-          <Col md={2}>
-            <Form.Group controlId="contractPolicyNumber">
-              <Form.Label>Policy Number</Form.Label>
-              <Form.Control
-                type="text"
-                name="contractPolicyNumber"
-                value={person.member.contract.policyNumber ? person.member.contract.policyNumber : person.member.contract.companyID}
-                onChange={(e) => handleContractChange('policyNumber', e.target.value)}
-                readOnly
-                disabled
-              />
-            </Form.Group>
-          </Col>
+         
           <Col md={2}>
             <Form.Group controlId="contractCompanyID">
               <Form.Label>Company ID</Form.Label>
@@ -603,8 +576,6 @@ const EditPersonForm = () => {
               />
             </Form.Group>
           </Col>
-        </Row>
-        <Row>
           <Col md={2}>
             <Form.Group controlId="contractCollectedPremium">
               <Form.Label>Collected Premium</Form.Label>
@@ -618,6 +589,8 @@ const EditPersonForm = () => {
               />
             </Form.Group>
           </Col>
+        </Row>
+        <Row>
           <Col md={2}>
             <Form.Group controlId="contractStatus">
               <Form.Label>Status</Form.Label>
