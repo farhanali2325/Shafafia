@@ -35,7 +35,7 @@ const DataTable = ({ data }) => {
         // If endSrl is not 11, check the entryDate condition
         const entryDate = new Date(row.entryDate.split('/').reverse().join('/'));
         const targetDate = new Date('2022-12-01');
-        if (entryDate > targetDate) {
+        if (entryDate < targetDate) {
           router.push({
             pathname: '/edit',
             query: { data: JSON.stringify(memberData) },
@@ -93,7 +93,7 @@ const DataTable = ({ data }) => {
       formatter: (cell, row) => {
         const entryDate = new Date(row.entryDate.split('/').reverse().join('/'));
         const targetDate = new Date('2022-12-01');
-        const isEnabled = row.endSrl == 11 || entryDate > targetDate;
+        const isEnabled = row.endSrl == 11 || entryDate < targetDate;
         return <EditButton row={row} onEdit={handleEdit} isEnabled={isEnabled} />;
       },
       style: { width: '80px' }
