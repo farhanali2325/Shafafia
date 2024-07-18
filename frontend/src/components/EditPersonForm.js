@@ -160,12 +160,17 @@ const handleChange = (field, value) => {
     event.preventDefault();
     setLoading(true); // Set loading to true when form is submitted
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/CreatePersonEntry`, person);
       const fileInfoResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_DOTNET}api/PersonRegisters`, person);
-      if (fileInfoResponse.data && response.data) {
-        setFilePath(fileInfoResponse.data.csvFilePath);
-        alert('Form submitted successfully');
+      if (fileInfoResponse.data) {
+        // Merge fileInfoResponse.data into person object
+        const updatedPerson = { ...person, fileInfoResponse: fileInfoResponse.data };
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/CreatePersonEntry`, updatedPerson);
+        if (response.data) {
+          setFilePath(fileInfoResponse.data.csvFilePath);
+          alert('Form submitted successfully');
+        }
       }
+      
     } catch (error) {
       console.error('Error submitting form:', error);
       setFilePath('');
@@ -400,7 +405,7 @@ const handleChange = (field, value) => {
             <Form.Control
               type="text"
               name="uploadStatus"
-              value={person.uploadStatus == 1 ?  "Success" : "Error"}
+              value={person.uploadStatus == 1 ?  "Success" : `Error: ${person.errors}`}
               readOnly
               style={{
                 color: person.sponsorNameAr == 1 ? 'green' : 'red',

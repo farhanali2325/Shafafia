@@ -25,7 +25,6 @@ const DataTable = ({ data }) => {
       // Fetch data from INHOUSE
       const inhouseResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/MemberDetails`, payload);
       const memberData = inhouseResponse.data;
-      console.log('Member Data:', memberData);
   
       if (memberData.length > 0 && memberData[0].endSrl == 11) {
         router.push({
