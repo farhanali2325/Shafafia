@@ -162,9 +162,10 @@ const handleChange = (field, value) => {
     try {
       const fileInfoResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_DOTNET}api/PersonRegisters`, person);
       if (fileInfoResponse.data) {
-        // Merge fileInfoResponse.data into person object
-        const updatedPerson = { ...person, fileInfoResponse: fileInfoResponse.data };
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/CreatePersonEntry`, updatedPerson);
+        // Set uploadStatus and uploadResponse in person object
+        person.uploadStatus = fileInfoResponse.data.status;
+        person.uploadResponse = fileInfoResponse.data.errors;
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/CreatePersonEntry`, person);
         if (response.data) {
           setFilePath(fileInfoResponse.data.csvFilePath);
           alert('Form submitted successfully');
@@ -405,10 +406,10 @@ const handleChange = (field, value) => {
             <Form.Control
               type="text"
               name="uploadStatus"
-              value={person.uploadStatus && person.fileInfoResponse.status ?  "Success" : `Error: ${person.fileInfoResponse.errors}`}
+              value={person.uploadStatus ? "Success" : `Error: ${person.uploadResponse}`}
               readOnly
               style={{
-                color: person.uploadStatus && person.fileInfoResponse.status ? 'green' : 'red',
+                color: person.uploadStatus ? 'green' : 'red',
                 fontWeight: 'bold' // Set fontWeight to 'bold' for bold text
               }}
               />
