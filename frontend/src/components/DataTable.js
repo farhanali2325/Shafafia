@@ -18,7 +18,7 @@ const EditButton = ({ row, onEdit, isEnabled }) => (
 const DataTable = ({ data }) => {
   const router = useRouter();
   const handleEdit = async (row) => {
-    const { cardNo, polNo, endSrl } = row;
+    const { cardNo, polNo, endSrl, endNo } = row;
     const payload = { cardNo, polNo, endSrl };
   
     try {
@@ -26,7 +26,7 @@ const DataTable = ({ data }) => {
       const inhouseResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/MemberDetails`, payload);
       const memberData = inhouseResponse.data;
   
-      if (memberData.length > 0 && memberData[0].endSrl == 11) {
+      if (memberData.length > 0 && memberData[0].endNo == 11) {
         router.push({
           pathname: '/edit',
           query: { data: JSON.stringify(memberData) },
@@ -93,7 +93,7 @@ const DataTable = ({ data }) => {
       formatter: (cell, row) => {
         const entryDate = new Date(row.entryDate.split('/').reverse().join('/'));
         const targetDate = new Date('2022-12-01');
-        const isEnabled = row.endSrl == 11 || entryDate < targetDate;
+        const isEnabled = row.endNo == 11 || entryDate < targetDate;
         return <EditButton row={row} onEdit={handleEdit} isEnabled={isEnabled} />;
       },
       style: { width: '80px' }
