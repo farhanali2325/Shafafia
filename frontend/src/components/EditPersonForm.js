@@ -405,10 +405,10 @@ const handleChange = (field, value) => {
             <Form.Control
               type="text"
               name="uploadStatus"
-              value={person.uploadStatus == 1 ?  "Success" : `Error: ${person.errors}`}
+              value={person.uploadStatus && person.fileInfoResponse.status ?  "Success" : `Error: ${person.fileInfoResponse.errors}`}
               readOnly
               style={{
-                color: person.sponsorNameAr == 1 ? 'green' : 'red',
+                color: person.uploadStatus && person.fileInfoResponse.status ? 'green' : 'red',
                 fontWeight: 'bold' // Set fontWeight to 'bold' for bold text
               }}
               />
