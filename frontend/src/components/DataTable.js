@@ -20,13 +20,13 @@ const DataTable = ({ data }) => {
   const handleEdit = async (row) => {
     const { cardNo, polNo, endSrl, endNo } = row;
     const payload = { cardNo, polNo, endSrl };
-  
+    console.log("payload: ", payload)
     try {
       // Fetch data from INHOUSE
       const inhouseResponse = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/MemberDetails`, payload);
       const memberData = inhouseResponse.data;
-  
-      if (memberData.length > 0 && memberData[0].endNo == 11) {
+      console.log("memberData: ", memberData)
+      if (endNo == 11) {
         router.push({
           pathname: '/edit',
           query: { data: JSON.stringify(memberData) },
