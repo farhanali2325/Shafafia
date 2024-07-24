@@ -100,13 +100,18 @@ const DataTable = ({ data }) => {
     },
   ];
 
+  const dataWithKeys = data.map((item, index) => ({
+    ...item,
+    uniqueKey: `${item.polNo}-${item.cardNo}-${item.endSrl}-${index}` // Ensure uniqueness
+  }));
+
   if (!data.length) {
     return <div>No data available</div>;
   }
 
   return (
     <BootstrapTable
-      keyField="polNo"
+     keyField="uniqueKey"
       data={data}
       columns={columns}
       pagination={paginationFactory()}
