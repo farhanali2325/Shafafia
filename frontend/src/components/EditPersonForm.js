@@ -412,7 +412,7 @@ const handleChange = (field, value) => {
                 color: person.uploadStatus == "NA" ? 'red' : person.uploadStatus == 1 ?  'green' : 'red',
                 fontWeight: 'bold' // Set fontWeight to 'bold' for bold text
               }}
-              />
+            />
           </Form.Group>
         </Col>
       </Row>
@@ -482,8 +482,7 @@ const handleChange = (field, value) => {
                 name="contractStartDate"
                 value={person.member.contract.startDate}
                 onChange={(e) => handleContractChange('startDate', e.target.value)}
-                readOnly
-                disabled
+                
               />
             </Form.Group>
           </Col>
@@ -495,8 +494,6 @@ const handleChange = (field, value) => {
                 name="contractRenewalDate"
                 value={person.member.contract.renewalDate}
                 onChange={(e) => handleContractChange('renewalDate', e.target.value)}
-                readOnly
-                disabled
               />
             </Form.Group>
           </Col>
@@ -508,8 +505,6 @@ const handleChange = (field, value) => {
                 name="contractExpiryDate"
                 value={person.member.contract.expiryDate}
                 onChange={(e) => handleContractChange('expiryDate', e.target.value)}
-                readOnly
-                disabled
               />
             </Form.Group>
           </Col>
@@ -605,8 +600,6 @@ const handleChange = (field, value) => {
                 name="contractStatus"
                 value={person.member.contract.status}
                 onChange={(e) => handleContractChange('status', e.target.value)}
-                readOnly
-                disabled
               />
             </Form.Group>
           </Col>

@@ -10,7 +10,7 @@ import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.m
 import styles from '../styles/Home.module.css'; // Adjust the path as necessary
 
 const EditButton = ({ row, onEdit, isEnabled }) => (
-  <button className="btn btn-primary btn-sm" onClick={() => onEdit(row)} disabled={!isEnabled}>
+  <button className="btn btn-primary btn-sm" onClick={() => onEdit(row)} >
     <i className="fas fa-edit"></i>
   </button>
 );
@@ -35,14 +35,14 @@ const DataTable = ({ data }) => {
         // If endSrl is not 11, check the entryDate condition
         const entryDate = new Date(row.entryDate.split('/').reverse().join('/'));
         const targetDate = new Date('2022-12-01');
-        if (entryDate < targetDate) {
+        // if (entryDate < targetDate) {
           router.push({
             pathname: '/edit',
             query: { data: JSON.stringify(memberData) },
           });
-        } else {
-          alert('Edit not allowed for this entry date');
-        }
+        // } else {
+        //   alert('Edit not allowed for this entry date');
+        // }
       }
     } catch (error) {
       console.error('Error:', error);
@@ -93,8 +93,8 @@ const DataTable = ({ data }) => {
       formatter: (cell, row) => {
         const entryDate = new Date(row.entryDate.split('/').reverse().join('/'));
         const targetDate = new Date('2022-12-01');
-        const isEnabled = row.endNo == 11 || entryDate < targetDate;
-        return <EditButton row={row} onEdit={handleEdit} isEnabled={isEnabled} />;
+        // const isEnabled = row.endNo == 11 || entryDate < targetDate;  isEnabled={isEnabled}
+        return <EditButton row={row} onEdit={handleEdit} />;
       },
       style: { width: '80px' }
     },
