@@ -50,7 +50,8 @@ const EditPersonForm = () => {
     },
   });
   const [nationalities, setNationalities] = useState([]);
-  const [filePath, setFilePath] = useState();
+  const [csvFilePath, setCSVFilePath] = useState();
+  const [xmlFilePath, setXMLFilePath] = useState();
   const [loading, setLoading] = useState(false); // Add loading state
   
   useEffect(() => {
@@ -74,16 +75,59 @@ const EditPersonForm = () => {
   }, []);
 
   const downloadCsv = async () => {
-    if(filePath){
-      try {
+      if(csvFilePath){
+        try {
+          const response = await axios({
+            url: `${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/Download-csv`, 
+            method: 'GET',
+            params: {
+              filePath: csvFilePath // Pass dynamic file path here
+            },
+            responseType: 'blob', // Important: responseType as 'blob' for binary data
+          });
+      
+          // Create a link element and click it to trigger the download
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          
+          // Extract file name from the response headers if available
+          const contentDisposition = response.headers['content-disposition'];
+          let fileName = `${person.member.id}.csv`; // Default file name
+          if (contentDisposition) {
+            const match = contentDisposition.match(/filename="(.+)"/);
+            if (match.length > 1) {
+              fileName = match[1];
+            }
+          }
+      
+          link.setAttribute('download', fileName);
+          document.body.appendChild(link);
+          link.click();
+      
+          // Clean up: remove the temporary link
+          link.parentNode.removeChild(link);
+      
+        } catch (error) {
+          console.error('Error downloading file:', error);
+          // Handle error
+        }
+      }
+  };
 
+  const downloadXML = async () => {
+    if (xmlFilePath) {
+      try {
         const response = await axios({
           url: `${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/Download-csv`, 
           method: 'GET',
           params: {
-            filePath: filePath // Pass dynamic file path here
+            filePath: xmlFilePath, // Pass dynamic file path here
           },
           responseType: 'blob', // Important: responseType as 'blob' for binary data
+          headers: {
+            'Accept': 'application/xml', // Ensure the request expects an XML response
+          }
         });
     
         // Create a link element and click it to trigger the download
@@ -93,10 +137,10 @@ const EditPersonForm = () => {
         
         // Extract file name from the response headers if available
         const contentDisposition = response.headers['content-disposition'];
-        let fileName = `${person.member.id}.csv`; // Default file name
+        let fileName = `${person.member.id}.xml`; // Default file name
         if (contentDisposition) {
           const match = contentDisposition.match(/filename="(.+)"/);
-          if (match.length > 1) {
+          if (match && match.length > 1) {
             fileName = match[1];
           }
         }
@@ -106,14 +150,14 @@ const EditPersonForm = () => {
         link.click();
     
         // Clean up: remove the temporary link
-        link.parentNode.removeChild(link);
+        document.body.removeChild(link);
     
       } catch (error) {
         console.error('Error downloading file:', error);
         // Handle error
       }
     }
-};
+  };
 
 const handleChange = (field, value) => {
   if (field === 'nationality') {
@@ -167,14 +211,15 @@ const handleChange = (field, value) => {
         person.uploadResponse = fileInfoResponse.data.errors;
         const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL_JAVA}Policy/CreatePersonEntry`, person);
         if (response.data) {
-          setFilePath(fileInfoResponse.data.csvFilePath);
+          setCSVFilePath(fileInfoResponse.data.csvFilePath);
+          setXMLFilePath(fileInfoResponse.data.xmlFilePath);
           alert('Form submitted successfully');
         }
       }
       
     } catch (error) {
       console.error('Error submitting form:', error);
-      setFilePath('');
+      setCSVFilePath('');
       alert('Error submitting form');
     } finally {
       setLoading(false); // Set loading to false when response is received or error occurs
@@ -611,11 +656,14 @@ const handleChange = (field, value) => {
               {loading ? 'Submitting...' : 'Submit'}
             </Button>
           </Col>
-          {filePath && (  
+          {csvFilePath && (  
             <Col md={2} className="mt-3 mb-6">
               <Button variant="secondary" type="button" onClick={downloadCsv}>
                 Download CSV
               </Button>
+              <Button variant="secondary" type="button" onClick={downloadXML}>
+                Download XML
+              </Button>            
             </Col>
           )}
         </Row>
